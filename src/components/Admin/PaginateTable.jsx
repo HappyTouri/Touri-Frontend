@@ -1,9 +1,9 @@
-import React, { Fragment, useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import React, { Fragment, useState } from "react";
+// import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Pagination, Spinner, Table, Col, Row, Card } from "react-bootstrap";
-import { xorBy } from "lodash";
+// import { xorBy } from "lodash";
 
 const PaginateTable = ({
   data,

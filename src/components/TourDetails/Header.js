@@ -8,7 +8,6 @@ import {
   InputGroup,
 } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { auth } from "../../Firebase/firebase";
 import Searchable from "react-searchable-dropdown";
 
 // FuScreen-start

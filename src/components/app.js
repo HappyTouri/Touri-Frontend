@@ -1,18 +1,31 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect } from "react";
 import Header from "../layouts/Header/Header";
 import Sidebar from "../layouts/SideBar/SideBar";
 import Footer from "../layouts/Footer/Footer";
 import Switcher from "../layouts/Switcher/Switcher";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import Rightside from "../layouts/Rightside/Rightside";
 import { Backtotop1 } from "../layouts/Backtotop/Backtotop";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { GetALLCoutries } from "../Redux/countryReducer/countrySlice";
-import { GetALLTourStatuses } from "../Redux/tourStatusesReducer/tourStatusesSlice";
+// import { GetALLTourStatuses } from "../Redux/tourStatusesReducer/tourStatusesSlice";
 import { setItem } from "../Redux/countryReducer/countrySlice";
-import { GetALLTourtitles } from "../Redux/tourTitlesReducer/tourTitlesSlice";
+import ErrorBoundary from "./ErrorBoundary";
+// import { GetALLTourtitles } from "../Redux/tourTitlesReducer/tourTitlesSlice";
 const App = () => {
   const dispatch = useDispatch();
+  const {isAuth} = useSelector((state)=>state.auth);
+  const navigate = useNavigate();
+  useEffect(()=>{
+    if(!isAuth){
+      navigate('login');
+      // throw new Error('please login')
+    } else if(isAuth){
+      dispatch(GetALLCoutries()).then((response) => {
+        dispatch(setItem(response.payload[0]));
+      });
+    }
+  },[isAuth , dispatch , navigate])
   document.querySelector("body").classList.remove("error-1");
   document
     .querySelector("body")
@@ -26,16 +39,11 @@ const App = () => {
   };
 
   // Feach all Countries With Cities
-  useEffect(() => {
-    dispatch(GetALLCoutries()).then((response) => {
-      dispatch(setItem(response.payload[0]));
-    });
-    // dispatch(GetALLTourStatuses());
-    // dispatch(GetALLTourtitles());
-  }, []);
+ 
 
   return (
-    <Fragment>
+   <>
+   {isAuth &&  <Fragment>
       <div className="horizontalMenucontainer">
         <Switcher />
         <div className="page">
@@ -56,7 +64,8 @@ const App = () => {
         <Backtotop1 />
         <Footer />
       </div>
-    </Fragment>
+    </Fragment>}
+   </>
   );
 };
 export default App;

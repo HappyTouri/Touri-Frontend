@@ -15,9 +15,11 @@ import tourHeaderReducer from "./tourHeaderReducer/tourHeaderSlice";
 import offerReducer from "./offerReducer/offerSlice";
 import TourReducer from "../components/Offers&Reservations/TourSlice";
 import UsersReducer from "./UsersReducer/UsersSlice";
+import authReducer from "./auth/authSlice";
 
 const store = configureStore({
   reducer: {
+    auth:authReducer,
     country: countryReducer,
     city: cityReducer,
     transportationTypes: transportationReducer,

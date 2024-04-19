@@ -1,4 +1,4 @@
-import React, { Fragment, useMemo, useState } from "react";
+import React, { Fragment, useMemo } from "react";
 import {
   Dropdown,
   Container,
@@ -9,10 +9,10 @@ import {
 } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { auth } from "../../Firebase/firebase";
 import Searchable from "react-searchable-dropdown";
 import { AllInbox } from "@material-ui/icons";
 import { setItem } from "../../Redux/countryReducer/countrySlice";
+import { logout } from "../../Redux/auth/authSlice";
 
 // FuScreen-start
 function Fullscreen() {
@@ -80,7 +80,7 @@ function Header() {
 
   let navigate = useNavigate();
   const routeChange = () => {
-    let path = `${process.env.PUBLIC_URL}/`;
+    let path = `/login`;
     navigate(path);
   };
 
@@ -400,8 +400,8 @@ function Header() {
                       </Dropdown.Item>
                       <Dropdown.Item
                         onClick={() => {
-                          auth.signOut();
-                          routeChange();
+                          dispatch(logout());
+                          navigate('/');
                         }}
                       >
                         <i className="fe fe-power"></i> Sign Out
