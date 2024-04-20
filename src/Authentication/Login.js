@@ -9,14 +9,18 @@ import {
   Card,
 } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { auth } from "../Firebase/firebase";
+import { login } from "../Redux/auth/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+// import axios from "axios";
 
 const SignIn = () => {
   const [err, setError] = useState("");
   const [data, setData] = useState({
-    email: "adminreact@gmail.com",
-    password: "1234567890",
+    email: "",
+    password: "",
   });
+  const {isAuth} = useSelector((state)=>state.auth);
+  const dispatch = useDispatch();
   const { email, password } = data;
   const changeHandler = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
@@ -24,22 +28,17 @@ const SignIn = () => {
   };
   let navigate = useNavigate();
   const routeChange = () => {
-    let path = `dashboard`;
+    let path = `/dashboard`;
     navigate(path);
   };
 
+  
   const Login = (e) => {
     e.preventDefault();
-    auth
-      .signInWithEmailAndPassword(email, password)
-      .then((user) => {
-        console.log(user);
-        routeChange();
-      })
-      .catch((err) => {
-        console.log(err);
-        setError(err.message);
-      });
+     dispatch(login(data));
+     if(isAuth){
+      routeChange();
+     }
   };
 
   return (
@@ -91,7 +90,7 @@ const SignIn = () => {
                           />
                           <div className="clearfix"></div>
                           {err && <Alert variant="danger">{err}</Alert>}
-                          <Form>
+                          <Form onSubmit={Login}>
                             <h5 className="text-start mb-2">
                               Signin to Your Account
                             </h5>
@@ -130,7 +129,7 @@ const SignIn = () => {
                               />
                             </Form.Group>
                             <Button
-                              onClick={Login}
+                              type="submit"
                               className="btn ripple btn-main-primary btn-block mt-2"
                             >
                               Sign In
@@ -142,7 +141,7 @@ const SignIn = () => {
                             </div>
                             <div>
                               Don't have an account?
-                              <Link to={`authentication/signup`}>
+                              <Link to={`/signup`}>
                                 Resgister Here
                               </Link>
                             </div>
@@ -156,7 +155,6 @@ const SignIn = () => {
             </Col>
           </Row>
         </div>
-
         {/* <!-- End Row --> */}
       </Fragment>
     </>

@@ -190,11 +190,11 @@ const Landingpage = () => {
                             New User
                           </Link>
                           <Link
-                            to={`#`}
+                            to={`login`}
                             className="btn ripple btn-min w-sm btn-primary me-2"
                             target="_blank"
                           >
-                            Loginffff
+                            Login
                           </Link>
                         </div>
                       </div>

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { auth } from "../Firebase/firebase";
 import {
   Button,
   Col,
@@ -24,22 +23,13 @@ const SignUp = () => {
 
   const Signup = (e) => {
     // e.preventDefault();
-    auth
-      .createUserWithEmailAndPassword(email, password)
-      .then((user) => {
-        console.log(user);
-        routeChange();
-      })
-      .catch((err) => {
-        console.log(err);
-        setError(err.message);
-      });
+   
   };
   let navigate = useNavigate();
-  const routeChange = () => {
-    let path = `${process.env.PUBLIC_URL}/dashboard/`;
-    navigate(path);
-  };
+  // const routeChange = () => {
+  //   let path = `${process.env.PUBLIC_URL}/dashboard/`;
+  //   navigate(path);
+  // };
   return (
     <div className="page main-signin-wrapper">
       <Row className="signpages text-center">

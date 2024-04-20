@@ -1,4 +1,4 @@
-import React, { Fragment, useMemo, useState } from "react";
+import React, { Fragment, useMemo } from "react";
 import {
   Dropdown,
   Container,
@@ -7,12 +7,12 @@ import {
   Navbar,
   InputGroup,
 } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { auth } from "../../Firebase/firebase";
 import Searchable from "react-searchable-dropdown";
-import { AllInbox } from "@material-ui/icons";
+// import { AllInbox } from "@material-ui/icons";
 import { setItem } from "../../Redux/countryReducer/countrySlice";
+import { logout } from "../../Redux/auth/authSlice";
 
 // FuScreen-start
 function Fullscreen() {
@@ -45,7 +45,7 @@ function Header() {
   const AllCountries = useSelector((state) => state.country.data);
   const selectedItem = useSelector((state) => state.country.item || "");
   // const [selectedCountryId, setSelectedCountryId] = useState(null);
-
+  const {user} = useSelector((state)=>state.auth);
   // get the selected Country
   const selectedCountry = useMemo(() => {
     if (!selectedItem.country) {
@@ -78,11 +78,11 @@ function Header() {
     }
   };
 
-  let navigate = useNavigate();
-  const routeChange = () => {
-    let path = `${process.env.PUBLIC_URL}/`;
-    navigate(path);
-  };
+  // let navigate = useNavigate();
+  // const routeChange = () => {
+  //   let path = `/login`;
+  //   navigate(path);
+  // };
 
   const openCloseSidebar1 = () => {
     document.querySelector(".header-settings").classList.toggle("show");
@@ -293,15 +293,15 @@ function Header() {
                       variant="default"
                     >
                       <i className="fe fe-bell header-icons"></i>
-                      <span className="badge bg-danger nav-link-badge">4</span>
+                      <span className="badge bg-danger nav-link-badge">{user?.unseenOffers.length>0 ? user.unseenOffers.length: ''}</span>
                     </Dropdown.Toggle>
                     <Dropdown.Menu style={{ margin: "0px" }}>
                       <div className="header-navheading">
                         <p className="main-notification-text">
-                          You have 1 unread notification
-                          <span className="badge bg-pill bg-primary ms-3">
+                          You have {user?.unseenOffers?.length} unread notification
+                          {/* <span className="badge bg-pill bg-primary ms-3">
                             View all
-                          </span>
+                          </span> */}
                         </p>
                       </div>
                       <div className="main-notification-list">
@@ -312,43 +312,22 @@ function Header() {
                               src={require("../../assets/img/users/5.jpg")}
                             />
                           </div>
-                          <div className="media-body">
-                            <p>
-                              Congratulate <strong>Olivia James</strong> for New
-                              template start
-                            </p>
-                            <span>Oct 15 12:32pm</span>
-                          </div>
+                         { user?.unseenOffers.length>0 ? user?.unseenOffers?.map((offer,i)=>(
+                           <div className="media-body" key={i}>
+                           <p>
+                             Congratulate <strong>New offer</strong> for New
+                             Customer Confirmed
+                           </p>
+                           <span>Oct 15 12:32pm</span>
+                         </div>
+                         )): <div className="media-body">
+                         <p>
+                             Nothing New
+                         </p>
+                         
+                       </div>}
                         </div>
-                        <div className="media">
-                          <div className="main-img-user">
-                            <img
-                              alt="avatar"
-                              src={require("../../assets/img/users/2.jpg")}
-                            />
-                          </div>
-                          <div className="media-body">
-                            <p>
-                              <strong>Joshua Gray</strong> New Message Received
-                            </p>
-                            <span>Oct 13 02:56am</span>
-                          </div>
-                        </div>
-                        <div className="media">
-                          <div className="main-img-user online">
-                            <img
-                              alt="avatar"
-                              src={require("../../assets/img/users/3.jpg")}
-                            />
-                          </div>
-                          <div className="media-body">
-                            <p>
-                              <strong>Elizabeth Lewis</strong> added new
-                              schedule realease
-                            </p>
-                            <span>Oct 12 10:40pm</span>
-                          </div>
-                        </div>
+                        
                       </div>
                       <div className="dropdown-footer">
                         <Link to="#">View All Notifications</Link>
@@ -368,9 +347,9 @@ function Header() {
                     <Dropdown.Menu style={{ margin: "0px" }}>
                       <div className="header-navheading">
                         <h6 className="main-notification-title">
-                          Sonia Taylor
+                          {user?.name}
                         </h6>
-                        <p className="main-notification-text">Web Designer</p>
+                        <p className="main-notification-text">{user?.role}</p>
                       </div>
                       <Dropdown.Item
                         className="border-top"
@@ -399,9 +378,9 @@ function Header() {
                         <i className="fe fe-compass"></i> Activity
                       </Dropdown.Item>
                       <Dropdown.Item
-                        onClick={() => {
-                          auth.signOut();
-                          routeChange();
+                        onClick={(e) => {
+                          e.preventDefault();
+                          dispatch(logout());
                         }}
                       >
                         <i className="fe fe-power"></i> Sign Out

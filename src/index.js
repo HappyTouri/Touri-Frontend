@@ -6,10 +6,11 @@ import Loader from "./layouts/Loader/Loader";
 import Auth from "./Authentication/auth";
 import { Provider } from "react-redux";
 import store from "./Redux/store";
+// import ErrorBoundary from "./components/ErrorBoundary";
 // import HotelPriceList from "./components/Accommodations/HotelPriceList";
 
 // Dashboard
-const Landingpageapp = React.lazy(() => import("./components/Landingpageapp"));
+// const Landingpageapp = React.lazy(() => import("./components/Landingpageapp"));
 const Dashboard = React.lazy(() => import("./components/Dashboard/Dashboard"));
 const App = React.lazy(() => import("./components/app"));
 
@@ -251,6 +252,8 @@ const Root = () => {
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
+    {/* <ErrorBoundary> */}
     <Root />
+    {/* </ErrorBoundary> */}
   </Provider>
 );
