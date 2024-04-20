@@ -293,15 +293,15 @@ function Header() {
                       variant="default"
                     >
                       <i className="fe fe-bell header-icons"></i>
-                      <span className="badge bg-danger nav-link-badge">4</span>
+                      <span className="badge bg-danger nav-link-badge">{user?.unseenOffers.length>0 ? user.unseenOffers.length: ''}</span>
                     </Dropdown.Toggle>
                     <Dropdown.Menu style={{ margin: "0px" }}>
                       <div className="header-navheading">
                         <p className="main-notification-text">
-                          You have 1 unread notification
-                          <span className="badge bg-pill bg-primary ms-3">
+                          You have {user?.unseenOffers?.length} unread notification
+                          {/* <span className="badge bg-pill bg-primary ms-3">
                             View all
-                          </span>
+                          </span> */}
                         </p>
                       </div>
                       <div className="main-notification-list">
@@ -312,43 +312,22 @@ function Header() {
                               src={require("../../assets/img/users/5.jpg")}
                             />
                           </div>
-                          <div className="media-body">
-                            <p>
-                              Congratulate <strong>Olivia James</strong> for New
-                              template start
-                            </p>
-                            <span>Oct 15 12:32pm</span>
-                          </div>
+                         { user?.unseenOffers.length>0 ? user?.unseenOffers?.map((offer,i)=>(
+                           <div className="media-body" key={i}>
+                           <p>
+                             Congratulate <strong>New offer</strong> for New
+                             Customer Confirmed
+                           </p>
+                           <span>Oct 15 12:32pm</span>
+                         </div>
+                         )): <div className="media-body">
+                         <p>
+                             Nothing New
+                         </p>
+                         
+                       </div>}
                         </div>
-                        <div className="media">
-                          <div className="main-img-user">
-                            <img
-                              alt="avatar"
-                              src={require("../../assets/img/users/2.jpg")}
-                            />
-                          </div>
-                          <div className="media-body">
-                            <p>
-                              <strong>Joshua Gray</strong> New Message Received
-                            </p>
-                            <span>Oct 13 02:56am</span>
-                          </div>
-                        </div>
-                        <div className="media">
-                          <div className="main-img-user online">
-                            <img
-                              alt="avatar"
-                              src={require("../../assets/img/users/3.jpg")}
-                            />
-                          </div>
-                          <div className="media-body">
-                            <p>
-                              <strong>Elizabeth Lewis</strong> added new
-                              schedule realease
-                            </p>
-                            <span>Oct 12 10:40pm</span>
-                          </div>
-                        </div>
+                        
                       </div>
                       <div className="dropdown-footer">
                         <Link to="#">View All Notifications</Link>

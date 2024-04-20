@@ -6,7 +6,7 @@ import Loader from "./layouts/Loader/Loader";
 import Auth from "./Authentication/auth";
 import { Provider } from "react-redux";
 import store from "./Redux/store";
-import ErrorBoundary from "./components/ErrorBoundary";
+// import ErrorBoundary from "./components/ErrorBoundary";
 // import HotelPriceList from "./components/Accommodations/HotelPriceList";
 
 // Dashboard
