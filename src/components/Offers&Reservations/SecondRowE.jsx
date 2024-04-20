@@ -60,41 +60,36 @@ export default function SecondRowE({
   }, [AllHotels, hotel_id]); // Dependency array
 
   //handelChange Room Category dropdown
-  const handelRoomCategoryDropdown = useCallback(
-    (value) => {
-      const filterHotels = AllHotels.find((hotel) => {
-        return hotel.id == hotel_id;
-      });
-      console.log(filterHotels);
+  const handelRoomCategoryDropdown = (value) => {
+    const filterHotels = AllHotels.find((hotel) => {
+      return hotel.id == hotel_id;
+    });
 
-      const roomCategory = filterHotels.hotel_room_categories.find(
-        (category) => category.id === value
-      );
+    const roomCategory = filterHotels?.hotel_room_categories.find(
+      (category) => category.id === value
+    );
 
-      const filter_by_date = roomCategory.hotel_prices.find((item) => {
-        const fromDateItem = new Date(item.hotel_season.from);
-        const toDateItem = new Date(item.hotel_season.till);
-        const date = new Date(indexDate);
-        return fromDateItem <= date && toDateItem > date;
-      });
+    const filter_by_date = roomCategory?.hotel_prices.find((item) => {
+      const fromDateItem = new Date(item.hotel_season.from);
+      const toDateItem = new Date(item.hotel_season.till);
+      const date = new Date(indexDate);
+      return fromDateItem <= date && toDateItem > date;
+    });
 
-      setSelectedRoomCategory(filter_by_date);
-      // setRoomPrice(filter_by_date.price);
-      dispatch(
-        handleChange_roomCategory({
-          tourDetailIndex: index,
-          roomCategoryIndex: indexx,
-          roomCategoryId: value,
-          roomPrice: filter_by_date.price,
-        })
-      );
-      dispatch(calculateHotelPrice({ tourDetailIndex: index }));
-      dispatch(calculateAccommodationsPrice());
-      dispatch(calculateTotalPrice());
-    },
-    [AllHotels]
-  );
-
+    setSelectedRoomCategory(filter_by_date);
+    // setRoomPrice(filter_by_date.price);
+    dispatch(
+      handleChange_roomCategory({
+        tourDetailIndex: index,
+        roomCategoryIndex: indexx,
+        roomCategoryId: value,
+        roomPrice: filter_by_date?.price,
+      })
+    );
+    dispatch(calculateHotelPrice({ tourDetailIndex: index }));
+    dispatch(calculateAccommodationsPrice());
+    dispatch(calculateTotalPrice());
+  };
   // handel change checkbox extrabed
   const handleExtrabedPrice = useCallback(
     (checked) => {

@@ -19,8 +19,9 @@ import {
   Reserve,
   CreatePassportPhotos,
   DeletePassportPhoto,
+  CreateAirticketPhotos,
+  DeleteAirticketPhoto,
 } from "../../../Redux/offerReducer/offerSlice";
-import { constant } from "lodash";
 
 const schema = Yup.object().shape({
   offer_id: Yup.number().required("Offer_id is Required"),
@@ -37,14 +38,14 @@ const CreateReservation = () => {
   const { id } = useParams();
   //Selectors
   const selectedItem = useSelector((state) => state.country.item || "");
-  const { item } = useSelector((state) => state.offer);
-  const { data, created } = useSelector((state) => state.user);
-  console.log(item);
+  const { item, created, deleted, updated } = useSelector(
+    (state) => state.offer
+  );
+  const { data, createdUser } = useSelector((state) => state.user);
+  // console.log(item);
 
   //States
   const [showFormAdd, setShowFormAdd] = useState(false);
-  const [urlsCar, setUrlsCar] = useState([]);
-  const [customer, setCustomer] = useState();
   // console.log(customer);
 
   //Dropdown users by Email
@@ -84,11 +85,32 @@ const CreateReservation = () => {
     dispatch(DeletePassportPhoto(id));
   };
 
+  // handleSubmiAirticketsPhotos
+  const handleSubmiAirticketsPhotos = (files) => {
+    if (files) {
+      if (files) {
+        const data = { id: id, air_tickets: files };
+        dispatch(CreateAirticketPhotos(data));
+      }
+    }
+  };
+
+  //handel delete airTickets photo
+  const handleDeleteAirticket = (id) => {
+    dispatch(DeleteAirticketPhoto(id));
+  };
+
   // Handle dropdown selection
   const handelSelectedCustomer = (selected) => {
-    // Use the selected value to filter the data
-    const filtered = data.find((item) => item.id === selected);
-    setCustomer(filtered);
+    const values = {
+      offer_id: id,
+      customer_id: selected,
+      number_of_people: 0,
+      note: "",
+    };
+    const data = { id: id, data: values };
+    dispatch(Reserve(data));
+
     formik.setValues((prevValues) => ({
       ...prevValues,
       customer_id: selected,
@@ -100,38 +122,21 @@ const CreateReservation = () => {
     setShowFormAdd(false);
   };
 
-  // Submit
-  const handleSubmitCar = (files) => {
-    if (files) {
-      const x = files.map((file) => URL.createObjectURL(file));
-      if (x) {
-        setUrlsCar(x);
-
-        formik.setValues((prevValues) => ({
-          ...prevValues,
-          CarPhoto: files,
-        }));
-      }
-    }
-  };
-
   //Use Effect
   useEffect(() => {
     if (id) {
       dispatch(GetSingleOffer(id));
       dispatch(GetALLUsers());
     }
-  }, [dispatch, id, created]);
+  }, [dispatch, id, created, deleted, createdUser, updated]);
 
   //Formik
   const formik = useFormik({
     initialValues: {
       offer_id: id,
-      customer_id: "",
-      number_of_people: "",
-      note: "",
-      // pasport_photos: [],
-      // airticket_photos: [],
+      customer_id: item?.customer_id || 0,
+      number_of_people: item?.number_of_people || 0,
+      note: item?.note || "",
     },
     validationSchema: schema,
     onSubmit: (values) => {
@@ -142,6 +147,14 @@ const CreateReservation = () => {
     },
   });
 
+  useEffect(() => {
+    formik.setValues({
+      offer_id: id,
+      customer_id: item?.customer_id || 0,
+      number_of_people: item?.number_of_people || 0,
+      note: item?.note || "",
+    });
+  }, [item]);
   return (
     <Fragment>
       <Form onSubmit={formik.handleSubmit}>
@@ -195,7 +208,6 @@ const CreateReservation = () => {
                   >
                     <Button
                       variant="primary"
-                      type="submit"
                       onClick={() => {
                         setShowFormAdd(true);
                       }}
@@ -208,203 +220,192 @@ const CreateReservation = () => {
             </Card>
           </Col>
         </Row>
-        {customer && (
-          <>
-            {" "}
-            <Row className="row-sm">
-              <Col lg={12} md={12}>
-                <Card className="custom-card">
-                  <Card.Body>
-                    <div>
-                      <h6 className="main-content-label mb-3">
-                        Selected Customer :
-                      </h6>
-                    </div>
-                    <Row className="row-sm mg-b-20">
-                      <div className="mb-2">
-                        <i className="si si-user  me-2 text-success"></i>
-                        <span>{customer.name}</span>
-                      </div>
-                      <div className="mb-2">
-                        <i className="si si-phone  me-2 text-success"></i>
-                        <span>{customer.mobile}</span>
-                      </div>
-                      <div>
-                        <i className="fe fe-mail  me-2 text-success"></i>
-                        <span>{customer.email}</span>
-                      </div>
-                    </Row>
-                    <Row className="row-sm">
-                      <div className="col-sm-4">
-                        <label className="">Number Of People :</label>
-                        <Form.Group className=" mb-3">
-                          <Form.Control
-                            type="number"
-                            name="number_of_people"
-                            value={formik.values.number_of_people}
-                            onChange={formik.handleChange}
-                            min={1}
-                            max={30}
-                            placeholder=" "
-                          />
-                        </Form.Group>
-                      </div>
-                    </Row>
-                    <Row className="row-sm">
-                      <Col md={12} lg={12} xl={12}>
-                        <div className="">
-                          <div className="form-group">
-                            <div className="pos-relative">
-                              <Form.Group className=" mb-0">
-                                <p className="mg-b-10">Note :</p>
-                                <Form.Control
-                                  as="textarea"
-                                  name="note"
-                                  value={formik.values.note}
-                                  onChange={formik.handleChange}
-                                  rows={4}
-                                />
-                              </Form.Group>
-                            </div>
-                          </div>
-                        </div>
-                      </Col>
-                    </Row>
-                    {/* <!-- Row (7) hotel Photos--> */}
-                    <div className="mb-4">
-                      <Row className="row-sm mb-2">
+
+        <Row className="row-sm">
+          <Col lg={12} md={12}>
+            <Card className="custom-card">
+              <Card.Body>
+                <div>
+                  <h6 className="main-content-label mb-3">
+                    Selected Customer :
+                  </h6>
+                </div>
+                <Row className="row-sm mg-b-20">
+                  <div className="mb-2">
+                    <i className="si si-user  me-2 text-success"></i>
+                    <span>{item?.customer?.name || "- - - - - -"}</span>
+                  </div>
+                  <div className="mb-2">
+                    <i className="si si-phone  me-2 text-success"></i>
+                    <span>{item?.customer?.mobile || "- - - - - -"}</span>
+                  </div>
+                  <div>
+                    <i className="fe fe-mail  me-2 text-success"></i>
+                    <span>{item?.customer?.email || "- - - - - -"}</span>
+                  </div>
+                </Row>
+                <Row className="row-sm">
+                  <div className="col-sm-4">
+                    <label className="">Number Of People :</label>
+                    <Form.Group className=" mb-3">
+                      <Form.Control
+                        type="number"
+                        name="number_of_people"
+                        value={formik.values.number_of_people}
+                        onChange={formik.handleChange}
+                        min={1}
+                        max={30}
+                        placeholder=" "
+                      />
+                    </Form.Group>
+                  </div>
+                </Row>
+                <Row className="row-sm">
+                  <Col md={12} lg={12} xl={12}>
+                    <div className="">
+                      <div className="form-group">
                         <div className="pos-relative">
                           <Form.Group className=" mb-0">
-                            <MUIdropzonebutton
-                              onSubmit={handleSubmipassportPhotos}
-                              name="Add Passport Photos"
-                              number_of_images={6}
+                            <p className="mg-b-10">Note :</p>
+                            <Form.Control
+                              as="textarea"
+                              name="note"
+                              value={formik.values.note}
+                              onChange={formik.handleChange}
+                              rows={4}
                             />
                           </Form.Group>
                         </div>
-                      </Row>
-                      <Row className="row-sm ">
-                        <div className="d-flex align-items-center flex-wrap ">
-                          {item?.passports &&
-                            item.passports.map((items, index) => (
-                              <div
-                                key={index}
-                                className="pos-relative ht-150 wd-200 me-3 mb-2 rounded"
-                              >
-                                <img
-                                  src={
-                                    process.env.REACT_APP_API_BASE_URL +
-                                    "/passports/" +
-                                    items.photo
-                                  }
-                                  alt={`Photo ${index}`}
-                                  className="img-fluid rounded pos-absolute"
-                                  style={{
-                                    objectFit: "cover",
-                                    width: "100%",
-                                    height: "100%",
-                                  }}
-                                />
-                                <Button
-                                  className="pos-absolute z-index-10"
-                                  type="button"
-                                  variant="danger"
-                                  onClick={() => {
-                                    handleDeletePhoto(items.id);
-                                  }}
-                                >
-                                  <i className="fe fe-x"></i>
-                                </Button>
-                              </div>
-                            ))}
-                        </div>
-                      </Row>
+                      </div>
                     </div>
-                    <Row className="row-sm">
-                      <Col md={12} lg={12} xl={12}>
-                        <div className="">
-                          <div className="form-group">
-                            <Row className="row-sm">
-                              <Col md={12} lg={12} xl={12}>
-                                <div className="">
-                                  <div className="form-group">
-                                    <div className="pos-relative">
-                                      <Form.Group className=" mb-0">
-                                        <p className="mg-b-10">Car Photos :</p>
-                                        <MUIdropzonebutton
-                                          onSubmit={handleSubmitCar}
-                                          name="Add Car Photos"
-                                          number_of_images={6}
-                                        />
-                                      </Form.Group>
-                                    </div>
-                                  </div>
-                                </div>
-                              </Col>
-                            </Row>
-                          </div>
-                        </div>
-                      </Col>
-                    </Row>
-                    <Row className="row-sm">
-                      <Col md={12} lg={12} xl={12}>
-                        <Row className="row-sm">
-                          {urlsCar.map((items, index) => (
-                            <Col
-                              md={6}
-                              lg={6}
-                              sm={6}
-                              xl={3}
-                              className="alert mb-0"
-                              key={index}
-                              data-index={index}
-                            >
-                              <div className="card custom-card">
-                                <div className="p-0">
-                                  <div className="product-grid">
-                                    <div className="product-image">
-                                      <img
-                                        className="pic-1"
-                                        alt="product1"
-                                        src={items}
-                                      />
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </Col>
-                          ))}
-                        </Row>
-                      </Col>
-                    </Row>
-                  </Card.Body>
-                </Card>
-              </Col>
-            </Row>
-            {/* <!-- Row --> */}
-            <Row className="row-sm">
-              <Col lg={12} md={12}>
-                <Card className=" custom-card">
-                  <Card.Body>
-                    <Row className="row-sm">
-                      <Col md={12} lg={12} xl={12}>
-                        <div className="">
-                          <Button
-                            type="submit"
-                            className="btn ripple btn-main-primary btn-block"
+                  </Col>
+                </Row>
+                {/* <!-- Row (7) hotel Photos--> */}
+                <div className="mb-4">
+                  <Row className="row-sm mb-2">
+                    <div className="pos-relative">
+                      <Form.Group className=" mb-0">
+                        <MUIdropzonebutton
+                          onSubmit={handleSubmipassportPhotos}
+                          name="Add Passport Photos"
+                          number_of_images={6}
+                        />
+                      </Form.Group>
+                    </div>
+                  </Row>
+                  <Row className="row-sm ">
+                    <div className="d-flex align-items-center flex-wrap ">
+                      {item?.passports &&
+                        item.passports.map((items, index) => (
+                          <div
+                            key={index}
+                            className="pos-relative ht-150 wd-200 me-3 mb-2 rounded"
                           >
-                            Submit
-                          </Button>
-                        </div>
-                      </Col>
-                    </Row>
-                  </Card.Body>
-                </Card>
-              </Col>
-            </Row>
-            {/* <!-- End Row --> */}
-          </>
-        )}
+                            <img
+                              src={
+                                process.env.REACT_APP_API_BASE_URL +
+                                "/passports/" +
+                                items.photo
+                              }
+                              alt={`Photo ${index}`}
+                              className="img-fluid rounded pos-absolute"
+                              style={{
+                                objectFit: "cover",
+                                width: "100%",
+                                height: "100%",
+                              }}
+                            />
+                            <Button
+                              className="pos-absolute z-index-10"
+                              type="button"
+                              variant="danger"
+                              onClick={() => {
+                                handleDeletePhoto(items.id);
+                              }}
+                            >
+                              <i className="fe fe-x"></i>
+                            </Button>
+                          </div>
+                        ))}
+                    </div>
+                  </Row>
+                </div>
+                {/* <!-- Row (8) hotel Photos--> */}
+                <div className="mb-4">
+                  <Row className="row-sm mb-2">
+                    <div className="pos-relative">
+                      <Form.Group className=" mb-0">
+                        <MUIdropzonebutton
+                          onSubmit={handleSubmiAirticketsPhotos}
+                          name="Add Airtickets Photos"
+                          number_of_images={6}
+                        />
+                      </Form.Group>
+                    </div>
+                  </Row>
+                  <Row className="row-sm ">
+                    <div className="d-flex align-items-center flex-wrap ">
+                      {item?.airtickets &&
+                        item.airtickets.map((items, index) => (
+                          <div
+                            key={index}
+                            className="pos-relative ht-150 wd-200 me-3 mb-2 rounded"
+                          >
+                            <img
+                              src={
+                                process.env.REACT_APP_API_BASE_URL +
+                                "/air_tickets/" +
+                                items.photo
+                              }
+                              alt={`Photo ${index}`}
+                              className="img-fluid rounded pos-absolute"
+                              style={{
+                                objectFit: "cover",
+                                width: "100%",
+                                height: "100%",
+                              }}
+                            />
+                            <Button
+                              className="pos-absolute z-index-10"
+                              type="button"
+                              variant="danger"
+                              onClick={() => {
+                                handleDeleteAirticket(items.id);
+                              }}
+                            >
+                              <i className="fe fe-x"></i>
+                            </Button>
+                          </div>
+                        ))}
+                    </div>
+                  </Row>
+                </div>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+        {/* <!-- Row --> */}
+        <Row className="row-sm">
+          <Col lg={12} md={12}>
+            <Card className=" custom-card">
+              <Card.Body>
+                <Row className="row-sm">
+                  <Col md={12} lg={12} xl={12}>
+                    <div className="">
+                      <Button
+                        type="submit"
+                        className="btn ripple btn-main-primary btn-block"
+                      >
+                        Submit
+                      </Button>
+                    </div>
+                  </Col>
+                </Row>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+        {/* <!-- End Row --> */}
       </Form>
     </Fragment>
   );

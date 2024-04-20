@@ -97,7 +97,8 @@ export default function EditTour(savedData, selectedItem) {
               return {
                 index: indexx,
                 room_category_id: item?.room_category_id ?? 0,
-                room_category_name: item?.room_category?.room_category,
+                room_category_name:
+                  item?.room_category?.room_category?.room_category,
                 room_price: parseFloat(item?.room_price ?? 0),
                 extrabed: !!item?.extra_bed,
                 extrabed_price: parseFloat(item?.extrabed_price ?? 0),

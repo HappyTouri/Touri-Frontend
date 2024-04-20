@@ -26,11 +26,17 @@ const CreateTour = React.lazy(() =>
 const Reservations = React.lazy(() =>
   import("./components/Offers&Reservations/Reservations")
 );
+const HotelReservation = React.lazy(() =>
+  import("./components/Offers&Reservations/HotelReservation")
+);
 const CreateReservation = React.lazy(() =>
   import("./components/Offers&Reservations/Reservation/CreateReservation")
 );
 const AllPackages = React.lazy(() =>
   import("./components/Offers&Reservations/TourPackages/AllPackages")
+);
+const AllReservedTours = React.lazy(() =>
+  import("./components/Offers&Reservations/ReservedTours/AllReservedTours")
 );
 const TourDetails = React.lazy(() =>
   import("./components/TourDetails/TourDetails")
@@ -139,8 +145,16 @@ const Root = () => {
                 <Route path={`reservations`} element={<Reservations />} />
                 <Route path={`all-packages`} element={<AllPackages />} />
                 <Route
+                  path={`all-reserved-packages`}
+                  element={<AllReservedTours />}
+                />
+                <Route
                   path={`create-reservation/:id`}
                   element={<CreateReservation />}
+                />
+                <Route
+                  path={`hotel-reservation/:id`}
+                  element={<HotelReservation />}
                 />
               </Route>
 

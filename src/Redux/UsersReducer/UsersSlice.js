@@ -99,7 +99,7 @@ export const usersSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
-        state.created = !state.created;
+        state.createdUser = !state.createdUser;
         if (state.isSuccess) {
           toast.success("Added 1 Successfully");
         }

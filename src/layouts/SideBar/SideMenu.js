@@ -32,7 +32,7 @@ export const MENUITEMS = [
         title: "Packages",
       },
       {
-        path: ``,
+        path: `all-reserved-packages`,
         icon: "pe-7s-date",
         type: "link",
         active: false,

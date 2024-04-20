@@ -45,6 +45,8 @@ export default function CreateTour() {
   const { item } = useSelector((state) => state.offer);
   const websiteShare = useSelector((state) => state.c_tour.data?.website_share);
 
+  // console.log(item);
+
   // Memoize the checkbox value based on websiteShare state
   const websiteShareChecked = useMemo(() => {
     return websiteShare === 1;
