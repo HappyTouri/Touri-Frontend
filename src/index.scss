@@ -1455,8 +1455,8 @@ ol.progtrckr li.progtrckr-done:before {
 @media (max-width: 575px) {
   .mapcontainer .map,
   .mapcontainer1 .map {
-    // height: 200px !important;
-    // width: 200px !important;
+    height: 200px !important;
+    width: 200px !important;
   }
 
   .leaflet-container {

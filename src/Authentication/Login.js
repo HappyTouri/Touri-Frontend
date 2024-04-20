@@ -12,7 +12,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { login } from "../Redux/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 // import axios from "axios";
-import axiosTouri from "../axiosTouri";
 
 const SignIn = () => {
   const [err, setError] = useState("");
@@ -33,16 +32,7 @@ const SignIn = () => {
     navigate(path);
   };
 
-  const log = async(dataa)=>{
-      try{
-        const res = await axiosTouri.post('auth/login',dataa);
-        console.log(res);
-        return res.data;
-      } catch(err){
-        return err;
-      }
-      
-  }
+  
   const Login = (e) => {
     e.preventDefault();
      dispatch(login(data));
@@ -165,7 +155,6 @@ const SignIn = () => {
             </Col>
           </Row>
         </div>
-
         {/* <!-- End Row --> */}
       </Fragment>
     </>

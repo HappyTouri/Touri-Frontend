@@ -10,8 +10,8 @@ export const signIn = async (data) => {
   };
 
   export const userLoaded = async (data) => {
-    const res = await axiosTouri.get(`auth/user-load`);
-    if (res.data.success) {
+    const res = await axiosTouri.get(`auth/user-loaded`);
+    if (res.data) {
       return res.data;
     }
   };

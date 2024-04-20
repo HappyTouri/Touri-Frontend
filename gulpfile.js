@@ -1,10 +1,10 @@
 var gulp = require('gulp');
 const sass = require('gulp-sass')(require('sass'));
-postcss = require("gulp-postcss");
-autoprefixer = require("autoprefixer");
+var postcss = require("gulp-postcss");
+var autoprefixer = require("autoprefixer");
 var sourcemaps = require('gulp-sourcemaps');
 var browserSync = require('browser-sync').create();
-cssbeautify = require('gulp-cssbeautify');
+var cssbeautify = require('gulp-cssbeautify');
 var beautify = require('gulp-beautify');
 
 

@@ -4,7 +4,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 
 
 const Auth = () => {
-    const {isAuth} = useSelector((state)=>state.auth);
+    const {isAuth , isLoading} = useSelector((state)=>state.auth);
     const navigate = useNavigate();
     useEffect(()=>{
       if(isAuth){
@@ -13,7 +13,7 @@ const Auth = () => {
     },[isAuth,navigate])
   return (
    <>
-    {!isAuth && <>
+    {!isAuth && !isLoading&& <>
       <div >
 <Outlet/>      
     </div>

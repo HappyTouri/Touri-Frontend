@@ -3,29 +3,38 @@ import Header from "../layouts/Header/Header";
 import Sidebar from "../layouts/SideBar/SideBar";
 import Footer from "../layouts/Footer/Footer";
 import Switcher from "../layouts/Switcher/Switcher";
-import { Outlet, useNavigate } from "react-router-dom";
+import {  Outlet, useNavigate } from "react-router-dom";
 import Rightside from "../layouts/Rightside/Rightside";
 import { Backtotop1 } from "../layouts/Backtotop/Backtotop";
 import { useDispatch, useSelector } from "react-redux";
 import { GetALLCoutries } from "../Redux/countryReducer/countrySlice";
 // import { GetALLTourStatuses } from "../Redux/tourStatusesReducer/tourStatusesSlice";
 import { setItem } from "../Redux/countryReducer/countrySlice";
-import ErrorBoundary from "./ErrorBoundary";
+// import ErrorBoundary from "./ErrorBoundary";
+import { userLoad } from "../Redux/auth/authSlice";
 // import { GetALLTourtitles } from "../Redux/tourTitlesReducer/tourTitlesSlice";
+// import Loader from './../layouts/Loader/Loader';
+
 const App = () => {
   const dispatch = useDispatch();
-  const {isAuth} = useSelector((state)=>state.auth);
+  const {isAuth,token , isLoading , userLoaded} = useSelector((state)=>state.auth);
   const navigate = useNavigate();
   useEffect(()=>{
-    if(!isAuth){
+    if(token){
+      dispatch(userLoad());
+    }
+  },[token,dispatch])
+  useEffect(()=>{
+    if(!isAuth&& !isLoading && userLoaded === false){
       navigate('login');
+      // console.log('hi')
       // throw new Error('please login')
     } else if(isAuth){
       dispatch(GetALLCoutries()).then((response) => {
         dispatch(setItem(response.payload[0]));
       });
     }
-  },[isAuth , dispatch , navigate])
+  },[isAuth , dispatch , navigate , isLoading , userLoaded])
   document.querySelector("body").classList.remove("error-1");
   document
     .querySelector("body")
@@ -43,7 +52,8 @@ const App = () => {
 
   return (
    <>
-   {isAuth &&  <Fragment>
+   {/* {isLoading && <Loader />} */}
+   {isAuth &&<Fragment>
       <div className="horizontalMenucontainer">
         <Switcher />
         <div className="page">
@@ -64,7 +74,7 @@ const App = () => {
         <Backtotop1 />
         <Footer />
       </div>
-    </Fragment>}
+    </Fragment> }
    </>
   );
 };

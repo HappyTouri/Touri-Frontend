@@ -7,10 +7,10 @@ import {
   Navbar,
   InputGroup,
 } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import Searchable from "react-searchable-dropdown";
-import { AllInbox } from "@material-ui/icons";
+// import { AllInbox } from "@material-ui/icons";
 import { setItem } from "../../Redux/countryReducer/countrySlice";
 import { logout } from "../../Redux/auth/authSlice";
 
@@ -45,7 +45,7 @@ function Header() {
   const AllCountries = useSelector((state) => state.country.data);
   const selectedItem = useSelector((state) => state.country.item || "");
   // const [selectedCountryId, setSelectedCountryId] = useState(null);
-
+  const {user} = useSelector((state)=>state.auth);
   // get the selected Country
   const selectedCountry = useMemo(() => {
     if (!selectedItem.country) {
@@ -78,11 +78,11 @@ function Header() {
     }
   };
 
-  let navigate = useNavigate();
-  const routeChange = () => {
-    let path = `/login`;
-    navigate(path);
-  };
+  // let navigate = useNavigate();
+  // const routeChange = () => {
+  //   let path = `/login`;
+  //   navigate(path);
+  // };
 
   const openCloseSidebar1 = () => {
     document.querySelector(".header-settings").classList.toggle("show");
@@ -368,9 +368,9 @@ function Header() {
                     <Dropdown.Menu style={{ margin: "0px" }}>
                       <div className="header-navheading">
                         <h6 className="main-notification-title">
-                          Sonia Taylor
+                          {user?.name}
                         </h6>
-                        <p className="main-notification-text">Web Designer</p>
+                        <p className="main-notification-text">{user?.role}</p>
                       </div>
                       <Dropdown.Item
                         className="border-top"
@@ -399,9 +399,9 @@ function Header() {
                         <i className="fe fe-compass"></i> Activity
                       </Dropdown.Item>
                       <Dropdown.Item
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.preventDefault();
                           dispatch(logout());
-                          navigate('/');
                         }}
                       >
                         <i className="fe fe-power"></i> Sign Out

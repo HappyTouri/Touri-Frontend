@@ -46,6 +46,7 @@ const initialState = {
   isAuth: false,
   isError: false,
   message: "",
+  userLoaded:true,
   user: {},
   token:localStorage.getItem("token") || null ,
   role:null
@@ -84,12 +85,14 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.isAuth = true;
         state.isError = false;
-        state.user = action.payload;
-        state.role = action.payload.role;
+        state.userLoaded = true;
+        state.user = action.payload?.user;
+        state.role = action.payload?.role;
       })
       .addCase(userLoad.rejected, (state, action) => {
         state.isLoading = false;
         state.isAuth = false;
+        state.userLoaded = false;
         state.isError = true;
         state.message = action.error;
       })
@@ -103,6 +106,7 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.isAuth = false;
         state.isError = false;
+        state.userLoaded = false;
         state.user = {};
         state.role = null;
       })

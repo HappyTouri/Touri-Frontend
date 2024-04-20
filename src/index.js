@@ -122,7 +122,7 @@ const Root = () => {
           <Routes>
             {/* Website */}
             <Route>
-              <Route path={`/`} element={<App />} />
+              <Route path={`/`} element={<Website />} />
             </Route>
             <Route path={``} element={<Auth />}>
               {/* <Route index element={<AuthLogin />} /> */}
@@ -238,8 +238,8 @@ const Root = () => {
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
-    <ErrorBoundary>
+    {/* <ErrorBoundary> */}
     <Root />
-    </ErrorBoundary>
+    {/* </ErrorBoundary> */}
   </Provider>
 );

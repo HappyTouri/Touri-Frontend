@@ -4,12 +4,29 @@ import { Link, NavLink } from "react-router-dom";
 import { Scrollbars } from "react-custom-scrollbars";
 import { horizontalmenusticky } from "../../data/Switcherdata/Switcherdata";
 import { useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+// import { forEach } from "lodash";
 let history = [];
+function filterMenuItemsByRole(menuItems, role) {
+  return menuItems.map(({ Items, ...rest }) => ({
+    ...rest,
+    Items: Items
+      ? Items.filter(item => item.role.includes(role)).map(({ children, ...itemRest }) => ({
+          ...itemRest,
+          children: children ? filterMenuItemsByRole(children, role) : [],
+        }))
+      : [],
+  }));
+}
+
+
 const SideBar = () => {
   let location = useLocation();
-
-  const [menuitems, setMenuitems] = useState(MENUITEMS);
+  
+  const {role} = useSelector((state)=>state.auth);
   // initial loading
+  const filteredMenuItems = filterMenuItemsByRole(MENUITEMS, role);
+  const [menuitems, setMenuitems] = useState(filteredMenuItems);
   useEffect(() => {
     history.push(location.pathname); // add  history to history  stack for current location.pathname to prevent multiple history calls innerWidth  and innerWidth  calls from  multiple users. This is important because the history stack is not always empty when the user clicks  the history
     if (history.length > 2) {
@@ -52,6 +69,8 @@ const SideBar = () => {
       clearMenuActive();
     }
   }
+  
+ 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   function setSidemenu() {
     if (menuitems) {
@@ -153,7 +172,7 @@ const SideBar = () => {
     }
   }
   function clearMenuActive() {
-    MENUITEMS.filter((mainlevel) => {
+    menuitems.filter((mainlevel) => {
       if (mainlevel.Items) {
         mainlevel.Items.filter((sublevel) => {
           sublevel.active = false;
@@ -177,6 +196,8 @@ const SideBar = () => {
     setMenuitems((arr) => [...arr]);
   }
 
+  // setMenuitems(filteredMenuItems);
+  
   // //Hover effect
   function Onhover() {
     if (document.querySelector(".main-body")) {

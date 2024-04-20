@@ -26,10 +26,10 @@ const SignUp = () => {
    
   };
   let navigate = useNavigate();
-  const routeChange = () => {
-    let path = `${process.env.PUBLIC_URL}/dashboard/`;
-    navigate(path);
-  };
+  // const routeChange = () => {
+  //   let path = `${process.env.PUBLIC_URL}/dashboard/`;
+  //   navigate(path);
+  // };
   return (
     <div className="page main-signin-wrapper">
       <Row className="signpages text-center">
