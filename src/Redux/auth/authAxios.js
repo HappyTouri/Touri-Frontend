@@ -5,6 +5,7 @@ import axiosTouri from "../../axiosTouri";
 export const signIn = async (data) => {
     const res = await axiosTouri.post(`auth/login`, data);
     if (res.data) {
+      localStorage.setItem('token',res?.data?.token)
       return res.data;
     }
   };
@@ -18,7 +19,8 @@ export const signIn = async (data) => {
 
   export const signOut = async () => {
     const res = await axiosTouri.post(`auth/logout`);
-    if (res.data.success) {
+    if (res.data) {
+      localStorage.removeItem('token');
       return res.data;
     }
   };

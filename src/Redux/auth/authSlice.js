@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 // import { toast } from "react-toastify";
 import { signIn, signOut, userLoaded } from './authAxios';
 
+const accessToken = localStorage.getItem('token')||null;
 // Get All Items From AXIOS API
 export const login = createAsyncThunk(
     "auth/login",
@@ -48,7 +49,7 @@ const initialState = {
   message: "",
   userLoaded:true,
   user: {},
-  token:localStorage.getItem("token") || null ,
+  token:accessToken,
   role:null
 };
 
@@ -63,10 +64,10 @@ export const authSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(login.fulfilled,  (state, action) => {
-        localStorage.setItem('token',action.payload?.token);
         state.isLoading = false;
         state.isAuth = true;
         state.isError = false;
+        // state.token=localStorage.getItem('token')?localStorage.getItem('token'):null;
         state.user = action.payload.user;
         state.role= action.payload.user.role;
       })
@@ -84,6 +85,9 @@ export const authSlice = createSlice({
       .addCase(userLoad.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isAuth = true;
+        if(state.isAuth){
+          state.token = localStorage.getItem('token')&&localStorage.getItem('token');
+        }
         state.isError = false;
         state.userLoaded = true;
         state.user = action.payload?.user;

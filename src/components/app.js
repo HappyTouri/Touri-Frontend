@@ -33,7 +33,7 @@ const App = () => {
         dispatch(setItem(response.payload[0]));
       });
     }
-  },[isAuth , dispatch , navigate , isLoading , userLoaded])
+  },[isAuth , dispatch , navigate , isLoading , userLoaded , token])
   document.querySelector("body").classList.remove("error-1");
   document
     .querySelector("body")
