@@ -45,7 +45,7 @@ function Header() {
   const AllCountries = useSelector((state) => state.country.data);
   const selectedItem = useSelector((state) => state.country.item || "");
   // const [selectedCountryId, setSelectedCountryId] = useState(null);
-  const {user} = useSelector((state)=>state.auth);
+  const { user } = useSelector((state) => state.auth);
   // get the selected Country
   const selectedCountry = useMemo(() => {
     if (!selectedItem.country) {
@@ -293,15 +293,20 @@ function Header() {
                       variant="default"
                     >
                       <i className="fe fe-bell header-icons"></i>
-                      <span className="badge bg-danger nav-link-badge">{user?.unseenOffers.length>0 ? user.unseenOffers.length: ''}</span>
+                      <span className="badge bg-danger nav-link-badge">
+                        {/* {user?.unseenOffers.length > 0
+                          ? user.unseenOffers.length
+                          : ""} */}
+                      </span>
                     </Dropdown.Toggle>
                     <Dropdown.Menu style={{ margin: "0px" }}>
                       <div className="header-navheading">
                         <p className="main-notification-text">
-                          You have {user?.unseenOffers?.length} unread notification
-                          {/* <span className="badge bg-pill bg-primary ms-3">
+                          {/* You have {user?.unseenOffers?.length || "Loading"}{" "} */}
+                          unread notification
+                          <span className="badge bg-pill bg-primary ms-3">
                             View all
-                          </span> */}
+                          </span>
                         </p>
                       </div>
                       <div className="main-notification-list">
@@ -312,22 +317,22 @@ function Header() {
                               src={require("../../assets/img/users/5.jpg")}
                             />
                           </div>
-                         { user?.unseenOffers.length>0 ? user?.unseenOffers?.map((offer,i)=>(
-                           <div className="media-body" key={i}>
-                           <p>
-                             Congratulate <strong>New offer</strong> for New
-                             Customer Confirmed
-                           </p>
-                           <span>Oct 15 12:32pm</span>
-                         </div>
-                         )): <div className="media-body">
-                         <p>
-                             Nothing New
-                         </p>
-                         
-                       </div>}
+                          {/* {user?.unseenOffers.length > 0 ? ( // comment
+                            user?.unseenOffers?.map((offer, i) => (
+                              <div className="media-body" key={i}>
+                                <p>
+                                  Congratulate <strong>New offer</strong> for
+                                  New Customer Confirmed
+                                </p>
+                                <span>Oct 15 12:32pm</span>
+                              </div>
+                            ))
+                          ) : (
+                            <div className="media-body">
+                              <p>Nothing New</p>
+                            </div>
+                          )} */}
                         </div>
-                        
                       </div>
                       <div className="dropdown-footer">
                         <Link to="#">View All Notifications</Link>

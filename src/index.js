@@ -86,7 +86,8 @@ const ApartmentPriceList = React.lazy(() =>
 );
 // Website
 const Website = React.lazy(() => import("./components/Website/Website"));
-
+//Users
+const Users = React.lazy(() => import("./components/Users/Users"));
 //Admin -------------------------------
 const Countries = React.lazy(() =>
   import("./components/Admin/countries/Countries")
@@ -115,7 +116,6 @@ const TourHeader = React.lazy(() =>
 const TourTitles = React.lazy(() =>
   import("./components/Admin/tourTitels/TourTitles")
 );
-const Roles = React.lazy(() => import("./components/Admin/roles/Roles"));
 
 const AuthLogin = React.lazy(() => import("./Authentication/Login"));
 const AuthSignup = React.lazy(() => import("./Authentication/Signup"));
@@ -127,11 +127,8 @@ const Root = () => {
         <React.Suspense fallback={<Loader />}>
           <Routes>
             {/* Website */}
-            <Route>
-              <Route path={`/`} element={<Website />} />
-            </Route>
-            <Route path={``} element={<Auth />}>
-              {/* <Route index element={<AuthLogin />} /> */}
+            <Route path="/" element={<AuthLogin />} />
+            <Route path={`/`} element={<Auth />}>
               <Route path={`login`} element={<AuthLogin />} />
               <Route path={`signup`} element={<AuthSignup />} />
             </Route>
@@ -209,6 +206,11 @@ const Root = () => {
                 />
               </Route>
 
+              {/* Users */}
+              <Route>
+                <Route path={`users`} element={<Users />} />
+              </Route>
+
               {/* Admin */}
               <Route>
                 <Route path={`admin/country`} element={<Countries />} />
@@ -235,8 +237,6 @@ const Root = () => {
                   path={`admin/tourguide-prices`}
                   element={<TourguidePricrs />}
                 />
-
-                <Route path={`admin/roles`} element={<Roles />} />
               </Route>
             </Route>
 

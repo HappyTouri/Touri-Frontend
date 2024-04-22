@@ -51,7 +51,7 @@ export const DeleteItem = createAsyncThunk(
 );
 
 const initialState = {
-  data: [],
+  data: false,
   isLoading: false,
   isSuccess: false,
   isError: false,
