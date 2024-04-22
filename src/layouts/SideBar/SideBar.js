@@ -8,8 +8,9 @@ import { useSelector } from "react-redux";
 // import { forEach } from "lodash";
 let history = [];
 function filterMenuItemsByRole(menuItems, role) {
-  return menuItems.map(({ Items, ...rest }) => ({
+  return menuItems.map(({menutitle, Items, ...rest }) => ({
     ...rest,
+    menutitle:menutitle,
     Items: Items
       ? Items.filter(item => item.role.includes(role)).map(({ children, ...itemRest }) => ({
           ...itemRest,
@@ -269,7 +270,7 @@ const SideBar = () => {
                   {menuitems.map((Item, itemi) => (
                     <Fragment key={itemi + Math.random() * 100}>
                       <li className="nav-header">
-                        <span className="nav-label">{Item.menutitle}</span>
+                        <span className="nav-label">{Item?.Items?.length>0 && Item.menutitle}</span>
                       </li>
                       {Item.Items.map((menuItem, i) => (
                         <li

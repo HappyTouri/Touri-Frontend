@@ -106,6 +106,7 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.isAuth = false;
         state.isError = false;
+        state.token = null;
         state.userLoaded = false;
         state.user = {};
         state.role = null;

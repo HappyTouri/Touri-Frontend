@@ -101,7 +101,7 @@ const PagiTableDriver = ({ data, remove, isLoading, tableTitle }) => {
                       <tr key={index}>
                         <td>{index + 1}</td>
                         <td>
-                          {item.driver_photos[0].photo && (
+                          {item?.driver_photos[0]?.photo && (
                             <>
                               <img
                                 alt="avatar"
@@ -109,7 +109,7 @@ const PagiTableDriver = ({ data, remove, isLoading, tableTitle }) => {
                                 src={
                                   process.env.REACT_APP_API_BASE_URL +
                                   "/DriverImages/" +
-                                  item.driver_photos[0].photo
+                                  item?.driver_photos[0]?.photo
                                 }
                               />
                             </>
@@ -122,7 +122,7 @@ const PagiTableDriver = ({ data, remove, isLoading, tableTitle }) => {
                             src={
                               process.env.REACT_APP_API_BASE_URL +
                               "/CarImages/" +
-                              item.car_photos[0].photo
+                              item?.car_photos[0]?.photo
                             }
                           />
                         </td>

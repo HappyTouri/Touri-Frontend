@@ -118,7 +118,10 @@ const TourTitles = React.lazy(() =>
 );
 
 const AuthLogin = React.lazy(() => import("./Authentication/Login"));
-const AuthSignup = React.lazy(() => import("./Authentication/Signup"));
+const AuthPass = React.lazy(() => import("./components/Custompages/Forgotpassword/Forgotpassword"));
+const AuthResetPass = React.lazy(() => import("./components/Custompages/Resetpassword/Resetpassword"));
+
+// const AuthSignup = React.lazy(() => import("./Authentication/Signup"));
 
 const Root = () => {
   return (
@@ -130,7 +133,11 @@ const Root = () => {
             <Route path="/" element={<AuthLogin />} />
             <Route path={`/`} element={<Auth />}>
               <Route path={`login`} element={<AuthLogin />} />
-              <Route path={`signup`} element={<AuthSignup />} />
+              <Route path={`forgot-password`} element={<AuthPass />} />
+              <Route path={`reset-password`} element={<AuthResetPass />} />
+
+
+              {/* <Route path={`signup`} element={<AuthSignup />} /> */}
             </Route>
             <Route path={``} element={<App />}>
               <Route>

@@ -4,13 +4,14 @@ import { Outlet, useNavigate } from "react-router-dom";
 
 
 const Auth = () => {
-    const {isAuth , isLoading} = useSelector((state)=>state.auth);
+    const {isAuth , isLoading , token} = useSelector((state)=>state.auth);
     const navigate = useNavigate();
     useEffect(()=>{
-      if(isAuth){
+  
+      if(token || isAuth){
         navigate('dashboard');
       }
-    },[isAuth,navigate])
+    },[token,navigate , isAuth])
   return (
    <>
     {!isAuth && !isLoading&& <>

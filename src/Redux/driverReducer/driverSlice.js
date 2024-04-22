@@ -174,6 +174,7 @@ export const driverSlice = createSlice({
         state.message = action.error;
         if (state.isError) {
           toast.error("Created Failed");
+          console.log(action?.payload?.message);
         }
       })
 

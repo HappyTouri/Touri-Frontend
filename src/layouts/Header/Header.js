@@ -317,7 +317,7 @@ function Header() {
                               src={require("../../assets/img/users/5.jpg")}
                             />
                           </div>
-                          {/* {user?.unseenOffers.length > 0 ? ( // comment
+                          {user?.unseenOffers?.length > 0 ? ( // comment
                             user?.unseenOffers?.map((offer, i) => (
                               <div className="media-body" key={i}>
                                 <p>
@@ -331,7 +331,7 @@ function Header() {
                             <div className="media-body">
                               <p>Nothing New</p>
                             </div>
-                          )} */}
+                          )}
                         </div>
                       </div>
                       <div className="dropdown-footer">
@@ -356,32 +356,7 @@ function Header() {
                         </h6>
                         <p className="main-notification-text">{user?.role}</p>
                       </div>
-                      <Dropdown.Item
-                        className="border-top"
-                        href={`${process.env.PUBLIC_URL}/pages/profile`}
-                      >
-                        <i className="fe fe-user"></i> My Profile
-                      </Dropdown.Item>
-                      <Dropdown.Item
-                        href={`${process.env.PUBLIC_URL}/pages/profile`}
-                      >
-                        <i className="fe fe-edit"></i> Edit Profile
-                      </Dropdown.Item>
-                      <Dropdown.Item
-                        href={`${process.env.PUBLIC_URL}/pages/profile`}
-                      >
-                        <i className="fe fe-settings"></i> Account Settings
-                      </Dropdown.Item>
-                      <Dropdown.Item
-                        href={`${process.env.PUBLIC_URL}/pages/profile`}
-                      >
-                        <i className="fe fe-settings"></i> Support
-                      </Dropdown.Item>
-                      <Dropdown.Item
-                        href={`${process.env.PUBLIC_URL}/pages/profile`}
-                      >
-                        <i className="fe fe-compass"></i> Activity
-                      </Dropdown.Item>
+                     
                       <Dropdown.Item
                         onClick={(e) => {
                           e.preventDefault();

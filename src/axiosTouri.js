@@ -6,7 +6,8 @@ import store from "./Redux/store";
 
 // const state = store.getState();
 // const { token } = state.auth;
-const token = localStorage.getItem('token')
+const token = localStorage.getItem('token');
+console.log(token);
 
 const headers = {
   Accept: "application/vnd.api+json",

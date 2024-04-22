@@ -7,7 +7,7 @@ export const MENUITEMS = [
         icon: "ti-home",
         type: "link",
         active: false,
-        role: ["admin", "user", "customer service"],
+        role: ["admin", "user", "tour"],
         selected: false,
         title: "Dashboard",
       },
@@ -89,7 +89,7 @@ export const MENUITEMS = [
         icon: "pe-7s-car",
         type: "sub",
         active: false,
-        role: ["admin", "user"],
+        role: ["admin", ""],
         selected: false,
         children: [
           {

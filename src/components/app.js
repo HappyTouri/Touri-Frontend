@@ -20,15 +20,14 @@ const App = () => {
   const {isAuth,token , isLoading , userLoaded} = useSelector((state)=>state.auth);
   const navigate = useNavigate();
   useEffect(()=>{
-    if(token){
+    const access = localStorage.getItem('token');
+    if(token === access){
       dispatch(userLoad());
-    }
+    } 
   },[token,dispatch])
   useEffect(()=>{
     if(!isAuth&& !isLoading && userLoaded === false){
       navigate('login');
-      // console.log('hi')
-      // throw new Error('please login')
     } else if(isAuth){
       dispatch(GetALLCoutries()).then((response) => {
         dispatch(setItem(response.payload[0]));
