@@ -3,7 +3,7 @@ import Header from "../layouts/Header/Header";
 import Sidebar from "../layouts/SideBar/SideBar";
 import Footer from "../layouts/Footer/Footer";
 import Switcher from "../layouts/Switcher/Switcher";
-import {  Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import Rightside from "../layouts/Rightside/Rightside";
 import { Backtotop1 } from "../layouts/Backtotop/Backtotop";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,23 +17,25 @@ import { userLoad } from "../Redux/auth/authSlice";
 
 const App = () => {
   const dispatch = useDispatch();
-  const {isAuth,token , isLoading , userLoaded} = useSelector((state)=>state.auth);
+  const { isAuth, token, isLoading, userLoaded } = useSelector(
+    (state) => state.auth
+  );
   const navigate = useNavigate();
-  useEffect(()=>{
-    const access = localStorage.getItem('token');
-    if(token === access){
+  useEffect(() => {
+    const access = localStorage.getItem("token");
+    if (token === access) {
       dispatch(userLoad());
-    } 
-  },[token,dispatch])
-  useEffect(()=>{
-    if(!isAuth&& !isLoading && userLoaded === false){
-      navigate('login');
-    } else if(isAuth){
+    }
+  }, [token, dispatch]);
+  useEffect(() => {
+    if (!isAuth && !isLoading && userLoaded === false) {
+      navigate("login");
+    } else if (isAuth) {
       dispatch(GetALLCoutries()).then((response) => {
         dispatch(setItem(response.payload[0]));
       });
     }
-  },[isAuth , dispatch , navigate , isLoading , userLoaded])
+  }, [isAuth, dispatch, navigate, isLoading, userLoaded]);
   document.querySelector("body").classList.remove("error-1");
   document
     .querySelector("body")
@@ -47,34 +49,35 @@ const App = () => {
   };
 
   // Feach all Countries With Cities
- 
 
   return (
-   <>
-   {/* {isLoading && <Loader />} */}
-   {isAuth &&<Fragment>
-      <div className="horizontalMenucontainer">
-        <Switcher />
-        <div className="page">
-          <Header />
-          <Sidebar />
-          <div className="main-content side-content">
-            <div
-              className="main-container container-fluid"
-              onClick={() => remove()}
-            >
-              <div className="inner-body">
-                <Outlet />
+    <>
+      {/* {isLoading && <Loader />} */}
+      {isAuth && (
+        <Fragment>
+          <div className="horizontalMenucontainer">
+            <Switcher />
+            <div className="page">
+              <Header />
+              <Sidebar />
+              <div className="main-content side-content">
+                <div
+                  className="main-container container-fluid"
+                  onClick={() => remove()}
+                >
+                  <div className="inner-body">
+                    <Outlet />
+                  </div>
+                </div>
               </div>
+              <Rightside />
             </div>
+            <Backtotop1 />
+            <Footer />
           </div>
-          <Rightside />
-        </div>
-        <Backtotop1 />
-        <Footer />
-      </div>
-    </Fragment> }
-   </>
+        </Fragment>
+      )}
+    </>
   );
 };
 export default App;

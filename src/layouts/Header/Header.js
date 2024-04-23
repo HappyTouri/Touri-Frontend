@@ -345,7 +345,7 @@ function Header() {
                       <span className="main-img-user mx-1">
                         <img
                           alt="avatar"
-                          src={require("../../assets/img/users/1.jpg")}
+                          src={require("../../assets/img/user.png")}
                         />
                       </span>
                     </Dropdown.Toggle>
@@ -356,7 +356,7 @@ function Header() {
                         </h6>
                         <p className="main-notification-text">{user?.role}</p>
                       </div>
-                     
+
                       <Dropdown.Item
                         onClick={(e) => {
                           e.preventDefault();

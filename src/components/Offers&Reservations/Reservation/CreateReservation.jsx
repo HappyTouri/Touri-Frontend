@@ -42,7 +42,7 @@ const CreateReservation = () => {
     (state) => state.offer
   );
   const { data, createdUser } = useSelector((state) => state.user);
-  // console.log(item);
+  // console.log(selectedItem);
 
   //States
   const [showFormAdd, setShowFormAdd] = useState(false);
@@ -159,7 +159,11 @@ const CreateReservation = () => {
     <Fragment>
       <Form onSubmit={formik.handleSubmit}>
         <ToastContainer />
-        <AddCustomer show={showFormAdd} handelClose={handelClose} />
+        <AddCustomer
+          countryID={selectedItem.id}
+          show={showFormAdd}
+          handelClose={handelClose}
+        />
         <Header
           title={"Add Reservation"}
           subTitle1={item?.country?.country || "loading..."}

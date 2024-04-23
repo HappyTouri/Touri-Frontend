@@ -47,11 +47,11 @@ function EditTourTitles({ itemData, show, handelClose }) {
       <Modal show={show} onHide={close}>
         <Form onSubmit={formik.handleSubmit}>
           <Modal.Header closeButton>
-            <Modal.Title>title_EN</Modal.Title>
+            <Modal.Title>Titles</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label>Country</Form.Label>
+              <Form.Label>title_EN</Form.Label>
               <Form.Control
                 type="text"
                 name="title_EN"

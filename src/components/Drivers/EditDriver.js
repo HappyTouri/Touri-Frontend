@@ -404,36 +404,45 @@ export default function EditDriver() {
                       number_of_images={6}
                     />
                   </Form.Group>
-                </Row>{" "}
-                <Row className="row-sm pt-3">
+                </Row>
+                {/* new row */}
+                <Row className="row-sm ">
                   <div className="d-flex align-items-center flex-wrap ">
-                    {item.car_photos?.map((items, index) => (
-                      <div
-                        key={index}
-                        className="pos-relative ht-150 wd-200 me-3 mb-2 rounded"
-                        style={{
-                          backgroundImage: `url(${
-                            process.env.REACT_APP_API_BASE_URL +
-                            "/CarImages/" +
-                            items.photo
-                          })`, // Set the URL of your image
-                          backgroundSize: "cover", // Cover the entire background area
-                          backgroundPosition: "center", // Center the background image
-                        }}
-                      >
-                        <Button
-                          type="button"
-                          variant="danger"
-                          onClick={() => {
-                            handleDeleteCarPhoto(items.id);
-                          }}
+                    {item?.car_photos &&
+                      item.car_photos.map((items, index) => (
+                        <div
+                          key={index}
+                          className="pos-relative ht-150 wd-200 me-3 mb-2 rounded"
                         >
-                          <i className="fe fe-x"></i>
-                        </Button>
-                      </div>
-                    ))}
+                          <img
+                            src={
+                              process.env.REACT_APP_API_BASE_URL +
+                              "/CarImages/" +
+                              items.photo
+                            }
+                            alt={`Photo ${index}`}
+                            className="img-fluid rounded pos-absolute"
+                            style={{
+                              objectFit: "cover",
+                              width: "100%",
+                              height: "100%",
+                            }}
+                          />
+                          <Button
+                            className="pos-absolute z-index-10"
+                            type="button"
+                            variant="danger"
+                            onClick={() => {
+                              handleDeleteCarPhoto(items.id);
+                            }}
+                          >
+                            <i className="fe fe-x"></i>
+                          </Button>
+                        </div>
+                      ))}
                   </div>
                 </Row>
+                {/* end row */}
               </Card.Body>
             </Card>
           </Col>

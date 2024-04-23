@@ -39,7 +39,7 @@ const incrementDate = (dateToInc, index) => {
 
 const initialState = {
   data: {
-    operator_id: 1,
+    operator_id: 0,
     country_id: 1,
     website_share: false,
     tour_name: "",
@@ -57,6 +57,7 @@ const initialState = {
     hotels_price: 0,
     profit_price: 0,
     total_price: 0,
+    reserved: "",
   },
   TourHeaders: [],
 };
@@ -70,6 +71,9 @@ const reducers = {
   },
   set_country_id: (state, { payload }) => {
     return { ...state, data: { ...state.data, country_id: payload } };
+  },
+  set_operator_id: (state, { payload }) => {
+    return { ...state, data: { ...state.data, operator_id: payload } };
   },
   handleChange_website_share: (state, { payload }) => {
     return { ...state, data: { ...state.data, website_share: payload } };
@@ -485,6 +489,7 @@ const TourSlice = createSlice({
 export const {
   set_edit,
   set_country_id,
+  set_operator_id,
   handleChange_website_share,
   handleChange_tour_name,
   handleChange_transportation_id,

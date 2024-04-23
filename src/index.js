@@ -24,8 +24,8 @@ const Error404 = React.lazy(() =>
 const CreateTour = React.lazy(() =>
   import("./components/Offers&Reservations/CreateTour")
 );
-const Reservations = React.lazy(() =>
-  import("./components/Offers&Reservations/Reservations")
+const WebsiteOffers = React.lazy(() =>
+  import("./components/Offers&Reservations/WebsiteOfers/WebsiteOffers")
 );
 const HotelReservation = React.lazy(() =>
   import("./components/Offers&Reservations/HotelReservation")
@@ -118,8 +118,12 @@ const TourTitles = React.lazy(() =>
 );
 
 const AuthLogin = React.lazy(() => import("./Authentication/Login"));
-const AuthPass = React.lazy(() => import("./components/Custompages/Forgotpassword/Forgotpassword"));
-const AuthResetPass = React.lazy(() => import("./components/Custompages/Resetpassword/Resetpassword"));
+const AuthPass = React.lazy(() =>
+  import("./components/Custompages/Forgotpassword/Forgotpassword")
+);
+const AuthResetPass = React.lazy(() =>
+  import("./components/Custompages/Resetpassword/Resetpassword")
+);
 
 // const AuthSignup = React.lazy(() => import("./Authentication/Signup"));
 
@@ -136,7 +140,6 @@ const Root = () => {
               <Route path={`forgot-password`} element={<AuthPass />} />
               <Route path={`reset-password`} element={<AuthResetPass />} />
 
-
               {/* <Route path={`signup`} element={<AuthSignup />} /> */}
             </Route>
             <Route path={``} element={<App />}>
@@ -147,7 +150,7 @@ const Root = () => {
               <Route>
                 <Route path={`create-tour`} element={<CreateTour />} />
                 <Route path={`edit-tour/:id`} element={<CreateTour />} />
-                <Route path={`reservations`} element={<Reservations />} />
+                <Route path={`website-offers`} element={<WebsiteOffers />} />
                 <Route path={`all-packages`} element={<AllPackages />} />
                 <Route
                   path={`all-reserved-packages`}

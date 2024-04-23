@@ -18,6 +18,9 @@ const AllPackages = () => {
   );
   // console.log(data);
 
+  //States
+  const [filterData, setFilterData] = useState([]);
+
   useEffect(() => {
     if (selectedItem.id) {
       dispatch(GetALLOffers(selectedItem.id));
@@ -29,19 +32,28 @@ const AllPackages = () => {
     dispatch(DeleteItem(id));
   };
 
+  // filtel data by shared website
+  useEffect(() => {
+    const filtered = data.filter((item) => {
+      return item.website_share == false && item.reserved == false;
+    });
+
+    setFilterData(filtered);
+  }, [data]);
+
   return (
     <Fragment>
       <ToastContainer />
       {/* <!-- Page Header --> */}
       <Header
-        title={"All Tour Packages"}
+        title={"All Offers"}
         subTitle1={"On Going"}
         subTitle2={selectedItem?.country || "loading..."}
       ></Header>
       {/* <!-- End Page Header --> */}
 
       {/* <!--Row Paginate Table--> */}
-      <Paginate data={data} remove={removeDriver} isLoading={isLoading} />
+      <Paginate data={filterData} remove={removeDriver} isLoading={false} />
       {/* <!- End Row Paginate Table--> */}
     </Fragment>
   );

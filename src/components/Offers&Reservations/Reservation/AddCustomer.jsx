@@ -15,9 +15,9 @@ const schema = Yup.object().shape({
     .required("Email is Required"),
 });
 
-function AddCustomer({ itemData, show, handelClose }) {
+function AddCustomer({ countryID, show, handelClose }) {
   const dispatch = useDispatch();
-
+  console.log(countryID);
   const close = () => {
     handelClose();
   };
@@ -27,6 +27,7 @@ function AddCustomer({ itemData, show, handelClose }) {
       name: "",
       mobile: "",
       email: "",
+      country_id: "",
     },
     validationSchema: schema,
     onSubmit: (values) => {
@@ -36,6 +37,11 @@ function AddCustomer({ itemData, show, handelClose }) {
     },
   });
 
+  useEffect(() => {
+    formik.setValues({
+      country_id: countryID,
+    });
+  }, [countryID]);
   return (
     <>
       <Modal show={show} onHide={close}>

@@ -30,6 +30,7 @@ import {
   set_country_id,
   set_edit,
   resetState,
+  set_operator_id,
 } from "./TourSlice";
 
 //============(Create Tour Page)
@@ -43,6 +44,8 @@ export default function CreateTour() {
   const TourHeaders = useSelector((state) => state.tourHeader.data);
   const { data } = useSelector((state) => state.c_tour);
   const { item } = useSelector((state) => state.offer);
+  const operator = useSelector((state) => state.auth.user);
+
   const websiteShare = useSelector((state) => state.c_tour.data?.website_share);
 
   // console.log(item);
@@ -96,7 +99,8 @@ export default function CreateTour() {
     dispatch(GetALLToursItems(selectedItem.id));
     dispatch(GetALLItems(selectedItem.id));
     dispatch(set_country_id(selectedItem.id));
-  }, [dispatch, selectedItem.id]);
+    dispatch(set_operator_id(operator.id));
+  }, [dispatch, selectedItem.id, operator]);
 
   useEffect(() => {
     if (id && item && selectedItem) {
@@ -108,7 +112,7 @@ export default function CreateTour() {
     if (id) {
       dispatch(GetSingleOffer(id));
     } else {
-      dispatch(resetState());
+      // dispatch(resetState());
     }
     dispatch(Get_tour_headers(TourHeaders));
   }, [TourHeaders, id]);

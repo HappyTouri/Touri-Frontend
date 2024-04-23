@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
-import Paginate from "./PagiTabelAllReservedTours";
+import Paginate from "./PagiTableAllWebsiteOffers";
 import Header from "../../Header";
 import { ToastContainer } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,7 +8,7 @@ import {
   DeleteItem,
 } from "../../../Redux/offerReducer/offerSlice";
 
-const AllReservedTours = () => {
+const WebsiteOffers = () => {
   const dispatch = useDispatch();
 
   //Selectors
@@ -16,7 +16,7 @@ const AllReservedTours = () => {
   const { data, isLoading, updated, created, deleted } = useSelector(
     (state) => state.offer
   );
-  console.log(data);
+  // console.log(data);
 
   //States
   const [filterData, setFilterData] = useState([]);
@@ -35,7 +35,7 @@ const AllReservedTours = () => {
   // filtel data by shared website
   useEffect(() => {
     const filtered = data.filter((item) => {
-      return item.website_share == false && item.reserved == true;
+      return item.website_share == true;
     });
 
     setFilterData(filtered);
@@ -46,8 +46,8 @@ const AllReservedTours = () => {
       <ToastContainer />
       {/* <!-- Page Header --> */}
       <Header
-        title={"Reservations"}
-        subTitle1={"Packages"}
+        title={"All Website Offers"}
+        subTitle1={"Sharred"}
         subTitle2={selectedItem?.country || "loading..."}
       ></Header>
       {/* <!-- End Page Header --> */}
@@ -59,8 +59,8 @@ const AllReservedTours = () => {
   );
 };
 
-AllReservedTours.propTypes = {};
+WebsiteOffers.propTypes = {};
 
-AllReservedTours.defaultProps = {};
+WebsiteOffers.defaultProps = {};
 
-export default AllReservedTours;
+export default WebsiteOffers;

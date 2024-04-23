@@ -8,7 +8,7 @@ import Searchable from "react-searchable-dropdown";
 import { CreateItem } from "../../Redux/TourReducer/tourSlice";
 import { ToastContainer } from "react-toastify";
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 //Form Validations
 const schema = Yup.object().shape({
@@ -27,6 +27,7 @@ const schema = Yup.object().shape({
 
 export default function AddTour() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // Selectors
   const selectedItem = useSelector((state) => state.country.item || "");
@@ -75,10 +76,9 @@ export default function AddTour() {
     },
     // validationSchema: schema,
     onSubmit: (values) => {
-      // values.images = filess;
-      // console.log(values);
       dispatch(CreateItem(values));
       formik.resetForm();
+      navigate("/all-tours/");
     },
   });
   return (
