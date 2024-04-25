@@ -17,6 +17,9 @@ import {
   deleteInvoicePhoto,
   createPaymentPhotos,
   deletePaymentPhoto,
+  sendEmail,
+  changeStatus,
+  cancelEmail,
 } from "./offerAxios";
 
 // Get All Items From AXIOS API
@@ -73,6 +76,38 @@ export const Reserve = createAsyncThunk(
   async (data, thunkAPI) => {
     try {
       return reserve(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+export const SendEmail = createAsyncThunk(
+  "offer/send",
+  async (data, thunkAPI) => {
+    try {
+      return sendEmail(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const ChangeStatus = createAsyncThunk(
+  "offer/change-status",
+  async (data, thunkAPI) => {
+    try {
+      return changeStatus(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const CancelEmail = createAsyncThunk(
+  "offer/cancel",
+  async (data, thunkAPI) => {
+    try {
+      return cancelEmail(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -497,6 +532,70 @@ export const offerSlice = createSlice({
         state.message = action.error;
         if (state.isError) {
           toast.error("Deleted Failed");
+        }
+      })
+      .addCase(SendEmail.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(SendEmail.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.deleted = !state.deleted;
+        if (state.isSuccess) {
+          toast.success("updated Successfully");
+        }
+      })
+      .addCase(SendEmail.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.isError = true;
+        state.message = action.error;
+        if (state.isError) {
+          toast.error("updated Failed");
+        }
+      })
+
+      .addCase(CancelEmail.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(CancelEmail.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.deleted = !state.deleted;
+        if (state.isSuccess) {
+          toast.success("updated Successfully");
+        }
+      })
+      .addCase(CancelEmail.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.isError = true;
+        state.message = action.error;
+        if (state.isError) {
+          toast.error("updated Failed");
+        }
+      })
+      .addCase(ChangeStatus.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(ChangeStatus.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.deleted = !state.deleted;
+        if (state.isSuccess) {
+          toast.success("updated Successfully");
+        }
+      })
+      .addCase(ChangeStatus.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.isError = true;
+        state.message = action.error;
+        if (state.isError) {
+          toast.error("updated Failed");
         }
       })
 

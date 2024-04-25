@@ -3,7 +3,7 @@ import Header from "../Header";
 import { ToastContainer } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams, Link } from "react-router-dom";
-import { GetSingleOffer } from "../../Redux/offerReducer/offerSlice";
+import { GetSingleOffer, SendEmail } from "../../Redux/offerReducer/offerSlice";
 import { Row, Col, Card, Form, Table } from "react-bootstrap";
 import { MUIdropzonebutton } from "../MUIdropzonebutton";
 import Button from "react-bootstrap/Button";
@@ -185,17 +185,20 @@ const HotelReservation = () => {
                     <span className=" me-3 flex-grow-1">
                       {itemD.accommodation?.email || "Loading"}
                     </span>
-                    {itemD?.available == 0 ? (
+
+                    {(itemD?.status === null ||
+                      itemD?.status === "Canceled Email") && (
                       <Link
                         to="#"
                         className="btn btn-sm btn-primary me-1"
                         onClick={() => {
-                          console.log(hotelsSlice[index]);
+                          dispatch(SendEmail(hotelsSlice[index]));
                         }}
                       >
                         Send Email
                       </Link>
-                    ) : (
+                    )}
+                    {itemD?.status === "Email Sent" && (
                       <Link
                         to="#"
                         className="btn btn-sm btn-danger me-1"
@@ -258,7 +261,7 @@ const HotelReservation = () => {
                     />
                   </Form.Group>
 
-                  {(itemD?.available == 0 ||
+                  {(itemD?.status == "Email Sent" ||
                     itemD?.accommodation?.accommodation_type?.id !== 1) && (
                     <>
                       <Row className="row-sm mt-3">
@@ -327,6 +330,7 @@ const HotelReservation = () => {
                               number_of_images={6}
                             />
                           </Form.Group>
+
                           <Form.Control
                             className="wd-100"
                             value=""
@@ -334,6 +338,15 @@ const HotelReservation = () => {
                             placeholder=" "
                             onChange={(e) => {}}
                           />
+                          <Link
+                            to="#"
+                            className="btn btn-sm btn-primary me-1"
+                            onClick={() => {
+                              console.log("kiro");
+                            }}
+                          >
+                            save
+                          </Link>
                         </div>
                       </Row>
                       <Row className="row-sm mt-1 ">
@@ -393,6 +406,15 @@ const HotelReservation = () => {
                             placeholder=" "
                             onChange={(e) => {}}
                           />
+                          <Link
+                            to="#"
+                            className="btn btn-sm btn-primary me-1"
+                            onClick={() => {
+                              console.log("kiro");
+                            }}
+                          >
+                            save
+                          </Link>
                         </div>
                       </Row>
                       <Row className="row-sm mt-1 ">

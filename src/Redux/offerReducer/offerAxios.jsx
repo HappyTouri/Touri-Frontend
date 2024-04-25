@@ -39,6 +39,27 @@ export const reserve = async (data) => {
     return res.data.data;
   }
 };
+export const sendEmail = async (data) => {
+  const res = await axiosTouri.put(`send-email`, data);
+  if (res.data.success) {
+    return res.data.data;
+  }
+};
+export const cancelEmail = async (data) => {
+  const res = await axiosTouri.put(`cancel-email`, data);
+  if (res.data) {
+    return res.data.data;
+  }
+};
+export const changeStatus = async (data) => {
+  const res = await axiosTouri.put(
+    `change-pay-or-invoicement/${data.id}`,
+    data.data
+  );
+  if (res.data) {
+    return res.data.data;
+  }
+};
 
 // Delete Item API
 export const deleteItem = async (id) => {
