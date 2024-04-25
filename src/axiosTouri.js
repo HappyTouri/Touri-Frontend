@@ -1,26 +1,47 @@
-import axios from "axios";
+// import axios from "axios";
 // import { useSelector } from "react-redux";
-import store from "./Redux/store";
+// import store from "./Redux/store";
 // import store from "./Redux/store";
 
-
-// const state = store.getState();
-// const { token } = state.auth;
-const token = localStorage.getItem('token');
-console.log(token);
-
-const headers = {
-  Accept: "application/vnd.api+json",
-  "Content-Type": "application/vnd.api+json",
-  Authorization: `Bearer ${token}`,
-};
+import axios from 'axios';
 
 const axiosTouri = axios.create({
   baseURL: `${process.env.REACT_APP_API_BASE_URL}/api`,
-  // baseURL: "http://dev.happytouri.com/api/",
-  headers,
 });
+
+axiosTouri.interceptors.request.use(
+  config => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+      config.headers.Accept = "application/vnd.api+json";
+
+    }
+    return config;
+  },
+  error => {
+    return Promise.reject(error);
+  }
+);
+
 export default axiosTouri;
+// const state = store.getState();
+// // const { token } = state.auth;
+// const token = localStorage.getItem('token')||null;
+
+// const headers = {
+//   Accept: "application/vnd.api+json",
+//     // Only include Authorization header if token is not null
+//     ...(token && { Authorization: `Bearer ${token}` }),
+//     "Content-Type": "application/vnd.api+json",
+//   };
+
+// const axiosTouri = axios.create({
+//   baseURL: `${process.env.REACT_APP_API_BASE_URL}/api`,
+//   // baseURL: "http://dev.happytouri.com/api/",
+//   headers,
+// });
+// export default axiosTouri;
 
 // api.js
 // import axios from 'axios';

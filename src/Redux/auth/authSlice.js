@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 // import { toast } from "react-toastify";
 import { signIn, signOut, userLoaded } from "./authAxios";
 
+const accessToken = localStorage.getItem("token") || null;
 // Get All Items From AXIOS API
 export const login = createAsyncThunk("auth/login", async (data, thunkAPI) => {
   try {
@@ -60,6 +61,7 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.isAuth = true;
         state.isError = false;
+        // state.token=localStorage.getItem('token')?localStorage.getItem('token'):null;
         state.user = action.payload.user;
         state.role = action.payload.user.role;
       })
@@ -77,6 +79,10 @@ export const authSlice = createSlice({
       .addCase(userLoad.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isAuth = true;
+        if (state.isAuth) {
+          state.token =
+            localStorage.getItem("token") && localStorage.getItem("token");
+        }
         state.isError = false;
         state.userLoaded = true;
         state.user = action.payload?.user;

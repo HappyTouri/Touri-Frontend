@@ -21,23 +21,21 @@ const App = () => {
     (state) => state.auth
   );
   const navigate = useNavigate();
-  // useEffect(() => {
-  //   const access = localStorage.getItem("token");
-  //   if (token === access) {
-  //     dispatch(userLoad());
-  //   }
-  // }, [token, dispatch]);
-
-  // useEffect(() => {
-  //   if (!isAuth && !isLoading && userLoaded === false) {
-  //     navigate("login");
-  //   } else if (isAuth) {
-  //     dispatch(GetALLCoutries()).then((response) => {
-  //       dispatch(setItem(response.payload[0]));
-  //     });
-  //   }
-  // }, [isAuth, dispatch, navigate, isLoading, userLoaded]);
-
+  useEffect(() => {
+    const access = localStorage.getItem("token");
+    if (token === access) {
+      dispatch(userLoad());
+    }
+  }, [token, dispatch]);
+  useEffect(() => {
+    if (!isAuth && !isLoading && userLoaded === false) {
+      navigate("login");
+    } else if (isAuth) {
+      dispatch(GetALLCoutries()).then((response) => {
+        dispatch(setItem(response.payload[0]));
+      });
+    }
+  }, [isAuth, dispatch, navigate, isLoading, userLoaded]);
   document.querySelector("body").classList.remove("error-1");
   document
     .querySelector("body")
