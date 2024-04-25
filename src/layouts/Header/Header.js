@@ -44,8 +44,8 @@ function Header() {
   const dispatch = useDispatch();
   const AllCountries = useSelector((state) => state.country.data);
   const selectedItem = useSelector((state) => state.country.item || "");
-  // const [selectedCountryId, setSelectedCountryId] = useState(null);
   const { user } = useSelector((state) => state.auth);
+  // console.log(user);
   // get the selected Country
   const selectedCountry = useMemo(() => {
     if (!selectedItem.country) {
@@ -177,7 +177,11 @@ function Header() {
                 placeholder={selectedCountry} // by default "Search"
                 notFoundText="No result found" // by default "No result found"
                 noInput
-                options={dropdownAllCountries}
+                options={
+                  user.role === "admin" || "customer service" || "travel agency"
+                    ? dropdownAllCountries
+                    : []
+                }
                 onSelect={handleCountrySelect} // Handle selection
                 listMaxHeight={140} //by default 140
               />

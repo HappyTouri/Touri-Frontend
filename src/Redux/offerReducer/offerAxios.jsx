@@ -87,3 +87,63 @@ export const deleteAirticketPhoto = async (id) => {
     return res.data.data;
   }
 };
+
+// Store Confirmation Photos API
+export const createConfirmationPhotos = async (data) => {
+  const res = await axiosTouri.post(`confirmation_photos`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  if (res.data.success) {
+    return res.data.data;
+  }
+};
+
+// Delete Confirmation Photo API
+export const deleteConfirmationPhoto = async (id) => {
+  const res = await axiosTouri.delete(`confirmation_photos/${id}`);
+  if (res.data.success) {
+    return res.data.data;
+  }
+};
+
+// Store Iinvoice Photos API
+export const createInvoicePhotos = async (data) => {
+  const res = await axiosTouri.post(`invoice_photos`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  if (res.data.success) {
+    return res.data.data;
+  }
+};
+
+// Delete Invoice Photo API
+export const deleteInvoicePhoto = async (id) => {
+  const res = await axiosTouri.delete(`invoice_photos/${id}`);
+  if (res.data.success) {
+    return res.data.data;
+  }
+};
+
+// Store Payment Photos API
+export const createPaymentPhotos = async (data) => {
+  const res = await axiosTouri.post(`payment_photos`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  if (res.data.success) {
+    return res.data.data;
+  }
+};
+
+// Delete Payment Photo API
+export const deletePaymentPhoto = async (id) => {
+  const res = await axiosTouri.delete(`payment_photos/${id}`);
+  if (res.data.success) {
+    return res.data.data;
+  }
+};

@@ -47,14 +47,14 @@ const data = {
   total_price: 0,
 };
 export default function EditTour(savedData, selectedItem) {
-  // console.log(savedData);
+  console.log(savedData);
 
   // Extract tour guide price safely
   const TourguidePrice = selectedItem?.tourguide_prices?.[0]?.price ?? 0;
 
   // Populate data object with saved data
   const data = {
-    operator_id: savedData?.operator_id ?? 1,
+    operator_id: savedData?.operator_id ?? 0,
     country_id: savedData?.country_id ?? 0,
     website_share: savedData?.website_share ?? false,
     tour_name: savedData?.tour_title ?? "",

@@ -16,7 +16,7 @@ import { xorBy } from "lodash";
 
 const PagiTabelAllReservedTours = ({ data, remove, isLoading, tableTitle }) => {
   const [share, setShare] = useState([]);
-  console.log(data);
+  // console.log(data);
 
   const dispatch = useDispatch();
   const recordsPerPage = 10;

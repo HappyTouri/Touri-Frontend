@@ -371,7 +371,7 @@ export default function EditDriver() {
                 </Row>
                 {/* <!-- Row (6)--> */}
                 <Row className="row-sm mb-5">
-                  <Row className="row-sm">
+                  <Row className="row-sm ">
                     <div className="form-group">
                       <div className="pos-relative">
                         <Form.Group className=" ">
@@ -386,17 +386,27 @@ export default function EditDriver() {
                   <Row className="row-sm">
                     {urls.map((items, index) => (
                       <div key={index}>
-                        <img
-                          className="pic-1 ht-150 rounded"
-                          alt="product1"
-                          src={items}
-                        />
+                        <div
+                          key={index}
+                          className="pos-relative ht-150 wd-200 me-3  rounded"
+                        >
+                          <img
+                            src={items}
+                            alt={`Photo ${index}`}
+                            className="img-fluid rounded pos-absolute"
+                            style={{
+                              objectFit: "cover",
+                              width: "100%",
+                              height: "100%",
+                            }}
+                          />
+                        </div>
                       </div>
                     ))}
                   </Row>
                 </Row>
                 {/* <!-- Row (7)--> */}
-                <Row className="row-sm">
+                <Row className="row-sm mb-2">
                   <Form.Group className=" mb-0">
                     <MUIdropzonebutton
                       onSubmit={handleSubmitCarPhotos}

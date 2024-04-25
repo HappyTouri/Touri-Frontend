@@ -36,6 +36,8 @@ import {
 //============(Create Tour Page)
 export default function CreateTour() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const { id } = useParams();
   const tourId = id ? id : 0; // If id is undefined, set it to 0
 
@@ -48,7 +50,7 @@ export default function CreateTour() {
 
   const websiteShare = useSelector((state) => state.c_tour.data?.website_share);
 
-  // console.log(item);
+  // console.log(data);
 
   // Memoize the checkbox value based on websiteShare state
   const websiteShareChecked = useMemo(() => {
@@ -122,10 +124,15 @@ export default function CreateTour() {
     if (validateData(data)) {
       if (id) {
         const offerData = { id, data };
-
         dispatch(UpdateItem(offerData));
       } else {
         dispatch(CreateItem(data));
+      }
+
+      if (data.website_share == 1) {
+        navigate(`/website-offers/`);
+      } else {
+        navigate(`/all-packages/`);
       }
     }
   };

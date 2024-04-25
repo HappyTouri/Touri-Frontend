@@ -11,6 +11,12 @@ import {
   deletePassportPhoto,
   createAirticketPhotos,
   deleteAirticketPhoto,
+  createConfirmationPhotos,
+  deleteConfirmationPhoto,
+  createInvoicePhotos,
+  deleteInvoicePhoto,
+  createPaymentPhotos,
+  deletePaymentPhoto,
 } from "./offerAxios";
 
 // Get All Items From AXIOS API
@@ -127,6 +133,78 @@ export const DeleteItem = createAsyncThunk(
   async (id, thunkAPI) => {
     try {
       return deleteItem(id);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+// Create Confirmation Photos AXIOS API
+export const CreateConfirmationPhotos = createAsyncThunk(
+  "confirmation/create-photo",
+  async (data, thunkAPI) => {
+    try {
+      return createConfirmationPhotos(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+// Delete Confirmation from AXIOS API
+export const DeleteConfirmationPhoto = createAsyncThunk(
+  "confirmation/delete",
+  async (id, thunkAPI) => {
+    try {
+      return deleteConfirmationPhoto(id);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+// Create Invoice Photos AXIOS API
+export const CreateInvoicePhotos = createAsyncThunk(
+  "invoice/create-photo",
+  async (data, thunkAPI) => {
+    try {
+      return createInvoicePhotos(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+// Delete Invoice from AXIOS API
+export const DeleteInvoicePhoto = createAsyncThunk(
+  "invoice/delete",
+  async (id, thunkAPI) => {
+    try {
+      return deleteInvoicePhoto(id);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+// Create Payment Photos AXIOS API
+export const CreatePaymentPhotos = createAsyncThunk(
+  "payment/create-photo",
+  async (data, thunkAPI) => {
+    try {
+      return createPaymentPhotos(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+// Delete Payment from AXIOS API
+export const DeletePaymentPhoto = createAsyncThunk(
+  "payment/delete",
+  async (id, thunkAPI) => {
+    try {
+      return deletePaymentPhoto(id);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -367,6 +445,144 @@ export const offerSlice = createSlice({
         }
       })
       .addCase(DeleteAirticketPhoto.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.isError = true;
+        state.message = action.error;
+        if (state.isError) {
+          toast.error("Deleted Failed");
+        }
+      })
+
+      // Store Confirmation Status
+      .addCase(CreateConfirmationPhotos.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(CreateConfirmationPhotos.fulfilled, (state) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.created = !state.created;
+        if (state.isSuccess) {
+          toast.success("Added Successfully");
+        }
+      })
+      .addCase(CreateConfirmationPhotos.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.isError = true;
+        state.message = action.error;
+        if (state.isError) {
+          toast.error("Created Failed");
+        }
+      })
+
+      // Deleted Confirmation Status
+      .addCase(DeleteConfirmationPhoto.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(DeleteConfirmationPhoto.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.deleted = !state.deleted;
+        if (state.isSuccess) {
+          toast.success("Deleted 1 Successfully");
+        }
+      })
+      .addCase(DeleteConfirmationPhoto.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.isError = true;
+        state.message = action.error;
+        if (state.isError) {
+          toast.error("Deleted Failed");
+        }
+      })
+
+      // Store invoice Status
+      .addCase(CreateInvoicePhotos.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(CreateInvoicePhotos.fulfilled, (state) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.created = !state.created;
+        if (state.isSuccess) {
+          toast.success("Added Successfully");
+        }
+      })
+      .addCase(CreateInvoicePhotos.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.isError = true;
+        state.message = action.error;
+        if (state.isError) {
+          toast.error("Created Failed");
+        }
+      })
+
+      // Deleted invoice Status
+      .addCase(DeleteInvoicePhoto.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(DeleteInvoicePhoto.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.deleted = !state.deleted;
+        if (state.isSuccess) {
+          toast.success("Deleted 1 Successfully");
+        }
+      })
+      .addCase(DeleteInvoicePhoto.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.isError = true;
+        state.message = action.error;
+        if (state.isError) {
+          toast.error("Deleted Failed");
+        }
+      })
+
+      // Store Payment Status
+      .addCase(CreatePaymentPhotos.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(CreatePaymentPhotos.fulfilled, (state) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.created = !state.created;
+        if (state.isSuccess) {
+          toast.success("Added Successfully");
+        }
+      })
+      .addCase(CreatePaymentPhotos.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.isError = true;
+        state.message = action.error;
+        if (state.isError) {
+          toast.error("Created Failed");
+        }
+      })
+
+      // Deleted Payment Status
+      .addCase(DeletePaymentPhoto.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(DeletePaymentPhoto.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.deleted = !state.deleted;
+        if (state.isSuccess) {
+          toast.success("Deleted 1 Successfully");
+        }
+      })
+      .addCase(DeletePaymentPhoto.rejected, (state, action) => {
         state.isLoading = false;
         state.isSuccess = false;
         state.isError = true;
