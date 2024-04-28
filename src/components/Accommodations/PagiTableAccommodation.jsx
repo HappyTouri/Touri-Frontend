@@ -33,7 +33,8 @@ const PagiTableAccommodation = ({ data, remove, isLoading, tableTitle }) => {
     updatedShare[index] = updatedShare[index] === 1 ? 0 : 1;
     setShare(updatedShare);
 
-    const updatedItem = { id: item.id, share: updatedShare[index].toString() };
+    const updatedItem = { id: item.id, share: updatedShare[index] };
+    // console.log(updatedItem);
     dispatch(Share(updatedItem));
   };
 
@@ -143,9 +144,10 @@ const PagiTableAccommodation = ({ data, remove, isLoading, tableTitle }) => {
                                   name="custom-switch-radio"
                                   checked={share[index] === 1 ? true : false}
                                   className="custom-switch-input"
-                                  onChange={() =>
-                                    handleShareChange(index, item)
-                                  }
+                                  onChange={(event) => {
+                                    // console.log(event.target.checked);
+                                    handleShareChange(index, item);
+                                  }}
                                 />
                                 <span className="custom-switch-indicator"></span>
                               </label>

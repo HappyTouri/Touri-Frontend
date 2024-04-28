@@ -22,10 +22,8 @@ export const createItem = async (data) => {
 
 // share Item API
 export const share = async (data) => {
-  const res = await axiosTouri.post(
-    `share-accommodations/${data.id}`,
-    data.share
-  );
+  console.log(data.share);
+  const res = await axiosTouri.post(`share-accommodations/${data.id}`, data);
   if (res.data.success) {
     return res.data.data;
   }

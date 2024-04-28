@@ -314,7 +314,7 @@ const HotelPriceList = () => {
                       $).
                     </p>
                   </div>
-                  <div className="table-responsive" responsive="true">
+                  <div className="table-responsivex" responsive="true">
                     <Table className="table text-nowrap text-md-nowrap table-bordered mg-b-0">
                       <thead>
                         <tr>

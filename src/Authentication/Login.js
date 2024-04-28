@@ -19,7 +19,7 @@ const SignIn = () => {
     email: "",
     password: "",
   });
-  const {isAuth} = useSelector((state)=>state.auth);
+  const { isAuth } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const { email, password } = data;
   const changeHandler = (e) => {
@@ -32,13 +32,12 @@ const SignIn = () => {
     navigate(path);
   };
 
-  
   const Login = (e) => {
     e.preventDefault();
-     dispatch(login(data));
-     if(isAuth){
+    dispatch(login(data));
+    if (isAuth) {
       routeChange();
-     }
+    }
   };
 
   return (
@@ -141,9 +140,7 @@ const SignIn = () => {
                             </div>
                             <div>
                               Don't have an account?
-                              <Link to={`/signup`}>
-                                Resgister Here
-                              </Link>
+                              <Link to={`/signup`}>Resgister Here</Link>
                             </div>
                           </div>
                         </Card.Body>

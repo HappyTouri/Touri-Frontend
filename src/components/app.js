@@ -30,12 +30,17 @@ const App = () => {
   useEffect(() => {
     if (!isAuth && !isLoading && userLoaded === false) {
       navigate("login");
-    } else if (isAuth) {
+    }
+  }, [isAuth, dispatch, navigate, isLoading, userLoaded]);
+
+  useEffect(() => {
+    if (isAuth) {
       dispatch(GetALLCoutries()).then((response) => {
         dispatch(setItem(response.payload[0]));
       });
     }
-  }, [isAuth, dispatch, navigate, isLoading, userLoaded]);
+  }, [isAuth]);
+
   document.querySelector("body").classList.remove("error-1");
   document
     .querySelector("body")
