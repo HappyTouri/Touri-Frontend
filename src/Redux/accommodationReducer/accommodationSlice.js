@@ -195,7 +195,7 @@ export const accommodationSlice = createSlice({
       })
       .addCase(GetALLItems.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.isSuccess = true;
+        // state.isSuccess = true;
         state.isError = false;
         state.data = action.payload;
       })
@@ -292,10 +292,10 @@ export const accommodationSlice = createSlice({
       })
       .addCase(AddApartmentPrices.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.isSuccess = true;
         state.isError = false;
         // state.data = action.payload;
         toast.success("Added Successfully");
+        state.isSuccess = true;
       })
       .addCase(AddApartmentPrices.rejected, (state, action) => {
         state.isLoading = false;
@@ -314,6 +314,7 @@ export const accommodationSlice = createSlice({
         state.isSuccess = true;
         state.isError = false;
         state.updated = !state.updated;
+
         if (state.isSuccess) {
           toast.success("Updated Successfully");
         }

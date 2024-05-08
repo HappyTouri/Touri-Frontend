@@ -119,6 +119,14 @@ export const MENUITEMS = [
         role: ["admin", "customer service", "tour operator"],
         selected: false,
         children: [
+          // {
+          //   path: `all-accommodation/2`,
+          //   type: "link",
+          //   active: false,
+          //   role: ["admin", "customer service", "tour operator"],
+          //   selected: false,
+          //   title: "Show Accommodations",
+          // },
           {
             path: `accommodation/all`,
             type: "link",

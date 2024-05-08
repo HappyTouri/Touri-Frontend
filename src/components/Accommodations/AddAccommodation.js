@@ -142,10 +142,11 @@ export default function AddAccommodation() {
       number_of_rooms: "",
       number_of_peoples: "",
       images: [],
+      hotel_website: "",
     },
     validationSchema: schema,
     onSubmit: (values) => {
-      console.log(values);
+      // console.log(values);
       dispatch(CreateItem(values));
       formik.resetForm();
       navigate(`/accommodation/all`);
@@ -369,6 +370,24 @@ export default function AddAccommodation() {
                                       type="text"
                                       name="video_link"
                                       value={formik.values.video_link}
+                                      onChange={formik.handleChange}
+                                      placeholder=" "
+                                    />
+                                  </Form.Group>
+                                </div>
+                              </div>
+                            </div>
+                          </Col>
+                          <Col md={6} lg={6} xl={6}>
+                            <div className="">
+                              <div className="form-group">
+                                <div className="pos-relative">
+                                  <label className="">Hotel Website :</label>
+                                  <Form.Group className=" mb-3">
+                                    <Form.Control
+                                      type="text"
+                                      name="hotel_website"
+                                      value={formik.values.hotel_website}
                                       onChange={formik.handleChange}
                                       placeholder=" "
                                     />

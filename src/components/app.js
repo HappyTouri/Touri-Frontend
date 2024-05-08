@@ -20,6 +20,7 @@ const App = () => {
   const { isAuth, token, isLoading, userLoaded } = useSelector(
     (state) => state.auth
   );
+
   const navigate = useNavigate();
   useEffect(() => {
     const access = localStorage.getItem("token");

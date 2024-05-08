@@ -67,11 +67,17 @@ const AddTourguide = React.lazy(() =>
 const AllAccommodations = React.lazy(() =>
   import("./components/Accommodations/AllAccommodations")
 );
+const AllViewAccommodations = React.lazy(() =>
+  import("./components/Accommodations/AllViewAccommodations")
+);
 const AddAccommodation = React.lazy(() =>
   import("./components/Accommodations/AddAccommodation")
 );
 const SingleAccommodation = React.lazy(() =>
   import("./components/Accommodations/SingleAccommodation")
+);
+const ViewAccommodation = React.lazy(() =>
+  import("./components/Accommodations/ViewAccommodation")
 );
 const EditAccommodation = React.lazy(() =>
   import("./components/Accommodations/EditAccommodation")
@@ -253,6 +259,15 @@ const Root = () => {
             {/* ........................................Errorpage............................................... */}
             <Route path="*" element={<Error404 />} />
             <Route path={`tour-details/:id`} element={<TourDetails />} />
+            <Route
+              path={`view-accommodation/:id`}
+              element={<ViewAccommodation />}
+            />
+
+            <Route
+              path={`all-accommodation/:id`}
+              element={<AllViewAccommodations />}
+            />
           </Routes>
         </React.Suspense>
       </BrowserRouter>

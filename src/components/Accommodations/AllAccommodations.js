@@ -3,6 +3,8 @@ import Paginate from "./PagiTableAccommodation";
 import Header from "../Header";
 import { ToastContainer } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
+import { Button, ButtonGroup } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import {
   GetALLItems,
   DeleteItem,
@@ -16,7 +18,7 @@ const AllAccommodations = () => {
   const { data, isLoading, updated, created, deleted } = useSelector(
     (state) => state.accommodations
   );
-
+  // console.log(selectedItem);
   useEffect(() => {
     if (selectedItem.id) {
       dispatch(GetALLItems(selectedItem.id));
@@ -36,11 +38,24 @@ const AllAccommodations = () => {
         title={"All Accommodations"}
         subTitle1={"All"}
         subTitle2={selectedItem?.country || "loading..."}
-      ></Header>
+      >
+        {
+          <ButtonGroup aria-label="Basic example" role="group">
+            <Button variant="primary" className=" pd-x-25" type="button">
+              <Link
+                to={`/all-accommodation/${selectedItem.id}`}
+                className="btn btn-sm  "
+              >
+                Show All Hotels
+              </Link>
+            </Button>
+          </ButtonGroup>
+        }
+      </Header>
       {/* <!-- End Page Header --> */}
 
       {/* <!--Row Paginate Table--> */}
-      <Paginate data={data} remove={removeDriver} isLoading={isLoading} />
+      <Paginate data={data} remove={removeDriver} isLoading={false} />
       {/* <!- End Row Paginate Table--> */}
     </Fragment>
   );

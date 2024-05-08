@@ -8,23 +8,24 @@ import { useSelector } from "react-redux";
 // import { forEach } from "lodash";
 let history = [];
 function filterMenuItemsByRole(menuItems, role) {
-  return menuItems.map(({menutitle, Items, ...rest }) => ({
+  return menuItems.map(({ menutitle, Items, ...rest }) => ({
     ...rest,
-    menutitle:menutitle,
+    menutitle: menutitle,
     Items: Items
-      ? Items.filter(item => item.role.includes(role)).map(({ children, ...itemRest }) => ({
-          ...itemRest,
-          children: children ? filterMenuItemsByRole(children, role) : [],
-        }))
+      ? Items.filter((item) => item.role.includes(role)).map(
+          ({ children, ...itemRest }) => ({
+            ...itemRest,
+            children: children ? filterMenuItemsByRole(children, role) : [],
+          })
+        )
       : [],
   }));
 }
 
-
 const SideBar = () => {
   let location = useLocation();
-  
-  const {role} = useSelector((state)=>state.auth);
+
+  const { role } = useSelector((state) => state.auth);
   // initial loading
   const filteredMenuItems = filterMenuItemsByRole(MENUITEMS, role);
   const [menuitems, setMenuitems] = useState(filteredMenuItems);
@@ -70,8 +71,7 @@ const SideBar = () => {
       clearMenuActive();
     }
   }
-  
- 
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   function setSidemenu() {
     if (menuitems) {
@@ -198,7 +198,7 @@ const SideBar = () => {
   }
 
   // setMenuitems(filteredMenuItems);
-  
+
   // //Hover effect
   function Onhover() {
     if (document.querySelector(".main-body")) {
@@ -237,6 +237,7 @@ const SideBar = () => {
                   <img
                     src={require("../../assets/img/brand/logo-light.png")}
                     className="header-brand-img desktop-logo"
+                    height="37px"
                     alt={"logo1"}
                   />
 
@@ -270,7 +271,9 @@ const SideBar = () => {
                   {menuitems.map((Item, itemi) => (
                     <Fragment key={itemi + Math.random() * 100}>
                       <li className="nav-header">
-                        <span className="nav-label">{Item?.Items?.length>0 && Item.menutitle}</span>
+                        <span className="nav-label">
+                          {Item?.Items?.length > 0 && Item.menutitle}
+                        </span>
                       </li>
                       {Item.Items.map((menuItem, i) => (
                         <li

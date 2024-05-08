@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { getAllItems, createItem, updateItem, deleteItem } from "./cityAxios";
 
 // Get All Items From AXIOS API
-export const GetALLItems = createAsyncThunk(
+export const GetALLCities = createAsyncThunk(
   "city/get-all",
   async (country_id, thunkAPI) => {
     try {
@@ -69,16 +69,16 @@ export const CitySlice = createSlice({
     builder
 
       // Get all Status
-      .addCase(GetALLItems.pending, (state) => {
+      .addCase(GetALLCities.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(GetALLItems.fulfilled, (state, action) => {
+      .addCase(GetALLCities.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
         state.data = action.payload;
       })
-      .addCase(GetALLItems.rejected, (state, action) => {
+      .addCase(GetALLCities.rejected, (state, action) => {
         state.isLoading = false;
         state.isSuccess = false;
         state.isError = true;

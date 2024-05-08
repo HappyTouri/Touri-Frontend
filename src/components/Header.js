@@ -1,5 +1,4 @@
 import { Breadcrumb } from "react-bootstrap";
-import Multiselect from "react-select";
 import { useEffect } from "react";
 
 export default function Header({
@@ -24,7 +23,7 @@ export default function Header({
   return (
     <>
       {/* <!-- Page Header --> */}
-      <div className="page-header layer3">
+      <div className="page-header layer3 ">
         <div className="">
           <h2 className="main-content-title tx-24 mg-b-5">{title}</h2>
           <Breadcrumb>

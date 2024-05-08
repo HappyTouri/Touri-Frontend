@@ -1,7 +1,8 @@
-import React, { Fragment, useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React, { Fragment, useState, useEffect, useMemo, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
+import Searchable from "react-searchable-dropdown";
 import {
   Pagination,
   Spinner,
@@ -10,32 +11,131 @@ import {
   Row,
   Card,
   Button,
+  InputGroup,
+  Form,
 } from "react-bootstrap";
 import { Share } from "../../Redux/accommodationReducer/accommodationSlice";
 import { xorBy } from "lodash";
 
+const ratedropdown = [
+  {
+    value: 4,
+    label: "4 Star",
+  },
+  {
+    value: 5,
+    label: "5 Star",
+  },
+];
+
 const PagiTableAccommodation = ({ data, remove, isLoading, tableTitle }) => {
   const [share, setShare] = useState([]);
-  // console.log(share);
+  // Create a ref for the search input
+  const inputRef = useRef(null);
+
+  //Selectors
+  const selectedItem = useSelector((state) => state.country?.item);
+
+  //Get the cities dropdown
+  const dropdownCities = useMemo(() => {
+    if (!selectedItem || !selectedItem.cities) {
+      return [];
+    }
+    return selectedItem.cities.map((item) => ({
+      value: item.id,
+      label: item.city,
+    }));
+  }, [selectedItem]);
+
+  // States for filters
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedRate, setSelectedRate] = useState(null);
+  const [selectedCity, setSelectedCity] = useState(null);
+  const [selectedAccommodationType, setSelectedAccommodationType] =
+    useState(null);
+  const [cityPlaceholder, setCityPlaceholder] = useState("City");
+  const [typePlaceholder, setTypePlaceholder] = useState("Type..");
+  const [ratePlaceholder, setRatePlaceholder] = useState("Rate..");
+
+  //Get the Accommodation Types dropdown
+  const uniqueAccommodationTypes = useMemo(() => {
+    const allAccommodationTypes = data.map((item) => ({
+      value: item.accommodation_type.id,
+      label: item.accommodation_type.accommodation_type,
+    }));
+
+    const unique = allAccommodationTypes.reduce(
+      (unique, current) => {
+        if (!unique.find((item) => item.label === current.label)) {
+          unique.push(current);
+        }
+        return unique;
+      },
+      [] // Initialize unique array as an empty array
+    );
+
+    // Optionally, you can prepend "No Accommodation" here if needed
+    return unique;
+  }, [data]);
+
+  // Event handler for the search button
+  const handleSearchButtonClick = () => {
+    const searchValue = inputRef.current.value;
+    setSearchQuery(searchValue);
+  };
+
+  // Filter accommodations based on the selected criteria
+  const filteredAccommodations = useMemo(() => {
+    return data.filter((item) => {
+      // Filter by rate
+      const rateMatch = selectedRate ? item.rate == selectedRate : true;
+      // Filter by city
+      const cityMatch = selectedCity ? item.city.id === selectedCity : true;
+      // Filter by search query
+      const searchMatch = searchQuery
+        ? item.name.toLowerCase().includes(searchQuery.toLowerCase())
+        : true;
+      // Filter by accommodation type
+      const typeMatch = selectedAccommodationType
+        ? item.accommodation_type.id === selectedAccommodationType
+        : true;
+      // Return true if all filters match
+      return rateMatch && cityMatch && typeMatch && searchMatch;
+    });
+  }, [
+    data,
+    selectedRate,
+    selectedCity,
+    selectedAccommodationType,
+    searchQuery,
+  ]);
 
   const dispatch = useDispatch();
+
+  //paginate
   const recordsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
   const lastIndex = currentPage * recordsPerPage;
   const firstIndex = lastIndex - recordsPerPage;
-  const records = data.slice(firstIndex, lastIndex);
-  const npage = Math.ceil(data.length / recordsPerPage);
+  const records = filteredAccommodations.slice(firstIndex, lastIndex);
+  const npage = Math.ceil(filteredAccommodations.length / recordsPerPage);
   const numbers = [...Array(npage + 1).keys()].slice(1);
   const Delete = 0;
 
-  const handleShareChange = (index, item) => {
-    const updatedShare = [...share];
-    updatedShare[index] = updatedShare[index] === 1 ? 0 : 1;
-    setShare(updatedShare);
+  const handelPage = (n) => {
+    setCurrentPage(n);
+  };
 
-    const updatedItem = { id: item.id, share: updatedShare[index] };
-    // console.log(updatedItem);
-    dispatch(Share(updatedItem));
+  const nextPage = () => {
+    if (currentPage !== npage) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const prePage = () => {
+    if (currentPage !== 1) {
+      setCurrentPage(currentPage - 1);
+    }
   };
 
   const handleDeleteClick = (id) => {
@@ -61,22 +161,15 @@ const PagiTableAccommodation = ({ data, remove, isLoading, tableTitle }) => {
     });
   };
 
-  const handelPage = (n) => {
-    setCurrentPage(n);
-  };
+  const handleShareChange = (index, item) => {
+    const updatedShare = [...share];
+    updatedShare[index] = updatedShare[index] === 1 ? 0 : 1;
+    setShare(updatedShare);
 
-  const nextPage = () => {
-    if (currentPage !== npage) {
-      setCurrentPage(currentPage + 1);
-    }
+    const updatedItem = { id: item.id, share: updatedShare[index] };
+    // console.log(updatedItem);
+    dispatch(Share(updatedItem));
   };
-
-  const prePage = () => {
-    if (currentPage !== 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
   useEffect(() => {
     if (data && data.length > 0) {
       const shareValues = data.map((item) => item.share);
@@ -99,6 +192,87 @@ const PagiTableAccommodation = ({ data, remove, isLoading, tableTitle }) => {
               </div>
             </Card.Header>
             <Card.Body>
+              <Row className="row-sm">
+                <Col md={6} lg={4} xl={4} className="mb-2">
+                  <InputGroup>
+                    <Form.Control
+                      type="text"
+                      className="form-control"
+                      placeholder="Search ..."
+                      ref={inputRef} // Attach the ref to the input field
+                    />
+                    <Button
+                      variant="primary"
+                      className="btn ripple"
+                      type="button"
+                      onClick={handleSearchButtonClick} // Bind the event handler to the button's onClick event
+                    >
+                      Search
+                    </Button>
+                  </InputGroup>
+                </Col>
+                <Col md={6} lg={2} xl={2} className="mb-2">
+                  <Searchable
+                    className="form-control select2"
+                    value={selectedCity}
+                    placeholder={cityPlaceholder}
+                    notFoundText="No result found" // by default "No result found"
+                    noInput
+                    options={dropdownCities}
+                    onSelect={(value) => {
+                      setSelectedCity(value);
+                    }}
+                    listMaxHeight={140} //by default 140
+                  />
+                </Col>
+                <Col md={6} lg={2} xl={2} className="mb-2">
+                  <Searchable
+                    className="form-control select2"
+                    value="test"
+                    placeholder="Type.." // by default "Search"
+                    notFoundText="No result found" // by default "No result found"
+                    noInput
+                    options={uniqueAccommodationTypes}
+                    onSelect={(value) => {
+                      setSelectedAccommodationType(value);
+                    }}
+                    listMaxHeight={140} //by default 140
+                  />
+                </Col>
+                <Col md={6} lg={2} xl={2} className="mb-2">
+                  <Searchable
+                    className="form-control select2"
+                    value="test"
+                    placeholder="Rate.." // by default "Search"
+                    notFoundText="No result found" // by default "No result found"
+                    noInput
+                    options={ratedropdown}
+                    onSelect={(value) => {
+                      setSelectedRate(value);
+                    }}
+                    listMaxHeight={140} //by default 140
+                  />
+                </Col>
+                <Col md={6} lg={2} xl={2} className="mb-2">
+                  {" "}
+                  <Button
+                    // type="submit"
+                    className="btn ripple btn-main-primary btn-block"
+                    onClick={() => {
+                      setSelectedRate(null);
+                      setSelectedCity(null);
+                      setSelectedAccommodationType(null);
+                      setSearchQuery("");
+                      inputRef.current.value = "";
+                      setCityPlaceholder("City"); // Reset the placeholder to its default value
+                      setTypePlaceholder("Type.."); // Reset the placeholder to its default value
+                      setRatePlaceholder("Rate.."); // Reset the placeholder to its default value
+                    }}
+                  >
+                    Reset Filter
+                  </Button>
+                </Col>
+              </Row>
               <div className="table-responsive border userlist-table">
                 {/* Table */}
                 <Table
@@ -134,7 +308,7 @@ const PagiTableAccommodation = ({ data, remove, isLoading, tableTitle }) => {
                   <tbody>
                     {!isLoading && (
                       <>
-                        {data.map((item, index) => (
+                        {records.map((item, index) => (
                           <tr key={index}>
                             <td>{index + 1}</td>
                             <td>
@@ -164,7 +338,14 @@ const PagiTableAccommodation = ({ data, remove, isLoading, tableTitle }) => {
                               />
                             </td>
 
-                            <td>{item.name}</td>
+                            <td>
+                              <Link
+                                to={`/view-accommodation/${item.id}`}
+                                className="  "
+                              >
+                                {item.name}
+                              </Link>
+                            </td>
                             <td>{item.mobile}</td>
                             <td>
                               {item.accommodation_type.id == 1 ? (

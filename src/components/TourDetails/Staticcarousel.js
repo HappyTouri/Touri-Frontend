@@ -1,5 +1,6 @@
 import Slider from "react-slick";
 export function Staticcarousel({ photos }) {
+  // console.log(photos);
   const settings = {
     dots: false,
     arrows: false,

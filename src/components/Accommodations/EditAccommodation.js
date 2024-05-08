@@ -58,9 +58,11 @@ export default function EditAccommodation() {
   const AccommodationTyps = useSelector(
     (state) => state.accommodationTypes?.data
   );
-  const { item, deletedPhoto, createdPhoto } = useSelector(
+  const { item, deletedPhoto, createdPhoto, isSuccess } = useSelector(
     (state) => state.accommodations
   );
+
+  // console.log(item);
   //States
   const [apartment, setApatment] = useState(false);
   const [urlCover, setUrlCover] = useState([]);
@@ -145,6 +147,7 @@ export default function EditAccommodation() {
       note: "",
       cover_photo: null,
       video_link: "",
+      hotel_website: "",
       city_id: "",
       accommodation_type_id: "",
       number_of_rooms: "",
@@ -156,7 +159,9 @@ export default function EditAccommodation() {
       const formatedData = { id: item.id, data: values };
       dispatch(UpdateItem(formatedData));
       //   formik.resetForm();
-      //   navigate(`/all-tours`);
+      if (isSuccess) {
+        navigate(`/accommodation/all`);
+      }
     },
   });
   useEffect(() => {
@@ -176,6 +181,7 @@ export default function EditAccommodation() {
       note: item?.note || "",
       cover_photo: item?.cover_photo || "",
       video_link: item?.video_link || "",
+      hotel_website: item?.hotel_website || "",
       city_id: item?.city?.id || "",
       accommodation_type_id: item?.accommodation_type?.id || "",
       number_of_rooms: item?.apartment_details?.number_of_rooms || "",
@@ -416,6 +422,24 @@ export default function EditAccommodation() {
                                       type="text"
                                       name="video_link"
                                       value={formik.values.video_link}
+                                      onChange={formik.handleChange}
+                                      placeholder=" "
+                                    />
+                                  </Form.Group>
+                                </div>
+                              </div>
+                            </div>
+                          </Col>
+                          <Col md={6} lg={6} xl={6}>
+                            <div className="">
+                              <div className="form-group">
+                                <div className="pos-relative">
+                                  <label className="">Hotel Website :</label>
+                                  <Form.Group className=" mb-3">
+                                    <Form.Control
+                                      type="text"
+                                      name="hotel_website"
+                                      value={formik.values.hotel_website}
                                       onChange={formik.handleChange}
                                       placeholder=" "
                                     />

@@ -8,7 +8,7 @@ import { ToastContainer } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import Multiselect from "react-select";
 
-import { GetALLItems, DeleteItem } from "../../../Redux/cityReducer/citySlice";
+import { GetALLCities, DeleteItem } from "../../../Redux/cityReducer/citySlice";
 
 const columns = [
   {
@@ -57,7 +57,7 @@ const Cities = () => {
   //Feach all Cityes
   useEffect(() => {
     if (countryID) {
-      dispatch(GetALLItems(countryID));
+      dispatch(GetALLCities(countryID));
     }
   }, [dispatch, updated, deleted, created, countryID]);
 
