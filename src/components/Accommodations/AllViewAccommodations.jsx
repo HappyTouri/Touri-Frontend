@@ -125,7 +125,7 @@ const AllViewAccommodations = () => {
       dispatch(GetALLItems(id));
       dispatch(GetALLCities(id));
     }
-  }, [dispatch]);
+  }, [dispatch, id]);
 
   return (
     <Fragment>

@@ -1,18 +1,53 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
-import { Pagination, Spinner, Table, Col, Row, Card } from "react-bootstrap";
+import {
+  Pagination,
+  Spinner,
+  Table,
+  Col,
+  Row,
+  Card,
+  Button,
+} from "react-bootstrap";
 import { xorBy } from "lodash";
+import Searchable from "react-searchable-dropdown";
 
 const PagiTableTour = ({ data, remove, isLoading, tableTitle }) => {
+  const [selectedCity, setSelectedCity] = useState(null);
+
+  // Filter accommodations based on the selected criteria
+  const filteredTours = useMemo(() => {
+    return data.filter((item) => {
+      // Filter by city
+      const cityMatch = selectedCity ? item.city.id === selectedCity : true;
+      // Return true if all filters match
+      return cityMatch;
+    });
+  }, [data, selectedCity]);
+
   const recordsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
   const lastIndex = currentPage * recordsPerPage;
   const firstIndex = lastIndex - recordsPerPage;
-  const records = data.slice(firstIndex, lastIndex);
-  const npage = Math.ceil(data.length / recordsPerPage);
+  const records = filteredTours.slice(firstIndex, lastIndex);
+  const npage = Math.ceil(filteredTours.length / recordsPerPage);
   const numbers = [...Array(npage + 1).keys()].slice(1);
+
+  //Selectors
+  const selectedItem = useSelector((state) => state.country?.item);
+
+  //Get the cities dropdown
+  const dropdownCities = useMemo(() => {
+    if (!selectedItem || !selectedItem.cities) {
+      return [];
+    }
+    return selectedItem.cities.map((item) => ({
+      value: item.id,
+      label: item.city,
+    }));
+  }, [selectedItem]);
 
   const handleDeleteClick = (id) => {
     Swal.fire({
@@ -68,6 +103,34 @@ const PagiTableTour = ({ data, remove, isLoading, tableTitle }) => {
               </div>
             </Card.Header>
             <Card.Body>
+              <Row className="row-sm">
+                <Col md={4} lg={4} xl={4} className="mb-2">
+                  <Searchable
+                    className="form-control select2"
+                    value={selectedCity}
+                    placeholder="City"
+                    notFoundText="No result found" // by default "No result found"
+                    noInput
+                    options={dropdownCities}
+                    onSelect={(value) => {
+                      setSelectedCity(value);
+                    }}
+                    listMaxHeight={140} //by default 140
+                  />
+                </Col>
+
+                <Col md={4} lg={8} xl={8} className="mb-2">
+                  <Button
+                    // type="submit"
+                    className="btn ripple btn-main-primary "
+                    onClick={() => {
+                      setSelectedCity(null);
+                    }}
+                  >
+                    Reset Filter
+                  </Button>
+                </Col>
+              </Row>
               <div className="table-responsive border userlist-table">
                 {/* Table */}
                 <Table

@@ -109,7 +109,7 @@ export default function ViewAccommodation() {
                 </Row>
                 <Row className="row-sm pt-3">
                   <h6>Hotel Video :</h6>
-                  <YouTube hotel_website={item.hotel_website} />
+                  <YouTube hotel_website={item.video_link} />
                 </Row>
               </Card.Body>
             </Card>
