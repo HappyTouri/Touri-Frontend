@@ -15,7 +15,7 @@ export default function ViewAccommodation() {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { item } = useSelector((state) => state.accommodations);
-  console.log(item);
+  // console.log(item);
 
   //feach all aingle item data
   useEffect(() => {

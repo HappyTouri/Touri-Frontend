@@ -2,7 +2,7 @@ import axiosTouri from "../../axiosTouri";
 
 // Get All Items
 export const getAllItems = async (country_id) => {
-  const res = await axiosTouri.get(`cities/${country_id}`);
+  const res = await axiosTouri.get(`cities-by-country/${country_id}`);
   if (res.data.success) {
     return res.data.data;
   }

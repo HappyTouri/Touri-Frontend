@@ -100,18 +100,18 @@ function Header({ handelSelectedLanguage }) {
           <div className="main-header-center">
             <div className="responsive-logo">
               <Link to={`${process.env.PUBLIC_URL}/dashboard/`}>
-                <img
+                {/* <img
                   src={require("../../assets/img/brand/logo.png")}
                   className="mobile-logo"
                   alt="logo"
-                />
+                /> */}
               </Link>
               <Link to={`${process.env.PUBLIC_URL}/dashboard/`}>
-                <img
+                {/* <img
                   src={require("../../assets/img/brand/logo-light.png")}
                   className="mobile-logo-dark"
                   alt="logo"
-                />
+                /> */}
               </Link>
             </div>
           </div>

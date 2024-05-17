@@ -50,6 +50,9 @@ export default function AddAccommodation() {
 
   //Selectors
   const selectedItem = useSelector((state) => state.country?.item);
+  const { accommodationCeriated } = useSelector(
+    (state) => state.accommodations
+  );
   const AccommodationTyps = useSelector(
     (state) => state.accommodationTypes?.data
   );
@@ -144,17 +147,34 @@ export default function AddAccommodation() {
       images: [],
       hotel_website: "",
     },
-    validationSchema: schema,
+    // validationSchema: schema,
     onSubmit: (values) => {
-      // console.log(values);
-      dispatch(CreateItem(values));
-      formik.resetForm();
-      navigate(`/accommodation/all`);
+      schema
+        .validate(values, { abortEarly: false })
+        .then(() => {
+          dispatch(CreateItem(values));
+        })
+        .catch((errors) => {
+          errors.inner.forEach((error) => {
+            toast.error(error.message);
+          });
+        });
     },
   });
   useEffect(() => {
     dispatch(GetALLItems(selectedItem.id));
   }, [dispatch]);
+
+  useEffect(() => {
+    if (accommodationCeriated) {
+      toast.success("Added Successfully", {
+        onClose: () => {
+          navigate(`/accommodation/all`);
+          formik.resetForm();
+        },
+      });
+    }
+  }, [accommodationCeriated]); // Add success dependency here
 
   return (
     <>

@@ -196,6 +196,7 @@ export const accommodationSlice = createSlice({
       .addCase(GetALLItems.fulfilled, (state, action) => {
         state.isLoading = false;
         // state.isSuccess = true;
+        state.accommodationCeriated = false;
         state.isError = false;
         state.data = action.payload;
       })
@@ -213,12 +214,13 @@ export const accommodationSlice = createSlice({
       })
       .addCase(CreateItem.fulfilled, (state) => {
         state.isLoading = false;
-        state.isSuccess = true;
+        state.accommodationCeriated = true;
         state.isError = false;
         state.created = !state.created;
-        if (state.isSuccess) {
-          toast.success("Added Successfully");
-        }
+        // if (state.isSuccess) {
+        //   toast.success("Added Successfully");
+        //   state.accommodationCeriated = true;
+        // }
       })
       .addCase(CreateItem.rejected, (state, action) => {
         state.isLoading = false;
