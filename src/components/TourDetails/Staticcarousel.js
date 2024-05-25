@@ -15,7 +15,7 @@ export function Staticcarousel({ photos }) {
       {
         breakpoint: 1920, // Adjusted breakpoint for xxl screens
         settings: {
-          slidesToShow: 6, // Show 3 slides for xxl screens
+          slidesToShow: 4, // Show 3 slides for xxl screens
           slidesToScroll: 3,
           infinite: true,
           dots: true,

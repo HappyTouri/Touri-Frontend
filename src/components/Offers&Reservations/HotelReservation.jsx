@@ -3,7 +3,11 @@ import Header from "../Header";
 import { ToastContainer } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams, Link } from "react-router-dom";
-import { GetSingleOffer, SendEmail } from "../../Redux/offerReducer/offerSlice";
+import {
+  GetSingleOffer,
+  SendEmail,
+  CancelEmail,
+} from "../../Redux/offerReducer/offerSlice";
 import { Row, Col, Card, Form, Table } from "react-bootstrap";
 import { MUIdropzonebutton } from "../MUIdropzonebutton";
 import Button from "react-bootstrap/Button";
@@ -22,6 +26,7 @@ import {
 const HotelReservation = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
+
   //Selectors
   const selectedItem = useSelector((state) => state.country.item || "");
   const { item, created, deleted, updated } = useSelector(
@@ -106,7 +111,7 @@ const HotelReservation = () => {
   // Handler to update note in hotelsSlice at a specific index
   const handleNoteChange = (index, newNote) => {
     const updatedHotelsSlice = [...hotelsSlice];
-    updatedHotelsSlice[index].note = newNote;
+    updatedHotelsSlice[index].email_note = newNote;
     setHotelsSlice(updatedHotelsSlice);
   };
 
@@ -192,7 +197,11 @@ const HotelReservation = () => {
                         to="#"
                         className="btn btn-sm btn-primary me-1"
                         onClick={() => {
+                          const updatedHotelsSlice = [...hotelsSlice];
+                          updatedHotelsSlice[index].status = "Email Sent";
+                          setHotelsSlice(updatedHotelsSlice);
                           dispatch(SendEmail(hotelsSlice[index]));
+                          console.log(hotelsSlice[index]);
                         }}
                       >
                         Send Email
@@ -203,7 +212,10 @@ const HotelReservation = () => {
                         to="#"
                         className="btn btn-sm btn-danger me-1"
                         onClick={() => {
-                          console.log(hotelsSlice[index]);
+                          const updatedHotelsSlice = [...hotelsSlice];
+                          updatedHotelsSlice[index].status = "Canceled Email";
+                          setHotelsSlice(updatedHotelsSlice);
+                          dispatch(CancelEmail(hotelsSlice[index]));
                         }}
                       >
                         Cancel Email
@@ -253,7 +265,7 @@ const HotelReservation = () => {
                     <Form.Control
                       as="textarea"
                       name="note"
-                      // value={}
+                      value={hotelsSlice[index].email_note}
                       onChange={(e) => {
                         handleNoteChange(index, e.target.value);
                       }}
@@ -264,6 +276,7 @@ const HotelReservation = () => {
                   {(itemD?.status == "Email Sent" ||
                     itemD?.accommodation?.accommodation_type?.id !== 1) && (
                     <>
+                      {/* confirmation photos  */}
                       <Row className="row-sm mt-3">
                         <div className="pos-relative">
                           <Form.Group className=" mb-0">
@@ -316,6 +329,7 @@ const HotelReservation = () => {
                             ))}
                         </div>
                       </Row>
+                      {/* invoice photos  */}
                       <Row className="row-sm mt-3">
                         <div className="pos-relative d-flex">
                           <Form.Group className=" mb-0 me-3">
@@ -385,6 +399,7 @@ const HotelReservation = () => {
                             ))}
                         </div>
                       </Row>
+                      {/* payment photos  */}
                       <Row className="row-sm mt-3">
                         <div className="pos-relative d-flex">
                           <Form.Group className=" mb-0 me-3 ">

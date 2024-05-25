@@ -37,6 +37,7 @@ const schema = Yup.object().shape({
     return !!value; // Replace this with your file validation logic
   }),
   video_link: Yup.string().required("video_link is Required"),
+  hotel_website: Yup.string().required("Website_link is Required"),
   city_id: Yup.number().required("city_id is Required"),
   accommodation_type_id: Yup.number().required(
     "Accommodation_type_id is Required"
@@ -156,7 +157,49 @@ export default function AddAccommodation() {
         })
         .catch((errors) => {
           errors.inner.forEach((error) => {
-            toast.error(error.message);
+            let errorMessage = "";
+            switch (error.path) {
+              case "name":
+                errorMessage = "Name is Required";
+                break;
+              case "rate":
+                errorMessage = "Hotel Rate is Required ";
+                break;
+              case "mobile":
+                errorMessage = "Mobile is Required";
+                break;
+              case "address":
+                errorMessage = "Address is Required";
+                break;
+              case "email":
+                errorMessage = "Email is Required";
+                break;
+              case "price_list_PDF":
+                errorMessage = "Price List image is Required";
+                break;
+
+              case "note":
+                errorMessage = "Note is Required";
+                break;
+              case "cover_photo":
+                errorMessage = "Cover Photo is Required";
+                break;
+              case "video_link":
+                errorMessage = "Video Link is Required";
+                break;
+              case "video_link":
+                errorMessage = "Website Link is Required";
+                break;
+              case "city_id":
+                errorMessage = "City is Required";
+                break;
+              case "accommodation_type_id":
+                errorMessage = "Accommodation Type  Required";
+                break;
+              default:
+                errorMessage = "Validation Error";
+            }
+            toast.error(errorMessage);
           });
         });
     },

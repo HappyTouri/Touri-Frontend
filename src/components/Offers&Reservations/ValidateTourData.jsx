@@ -88,7 +88,7 @@ const validateData = (data) => {
     tourguide_price,
     transportation_price,
     hotels_price,
-    profit_price,
+    // profit_price,
     total_price,
   } = data;
 
@@ -106,7 +106,7 @@ const validateData = (data) => {
     isNumber(tourguide_price, "tourguide_price");
     isNumber(transportation_price, "transportation_price");
     isNumber(hotels_price, "hotels_price");
-    required(profit_price, "profit_price");
+    // required(profit_price, "profit_price");
     isNumber(total_price, "total_price");
 
     return true;
